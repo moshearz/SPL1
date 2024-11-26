@@ -54,5 +54,9 @@ const &Facility::getStatus() const {
 }
 
 const string &Facility::toString() const {
-    return 
+    std::ostringstream oss;
+    oss << "Facility: " << getName() << ", Settlement: " << settlementName
+        << ", Status: " << (status == FacilityStatus::UNDER_CONSTRUCTIONS ? "Under Construction" : "Operational")
+        << ", Time Left: " << timeLeft;
+    return oss.str();
 }
