@@ -23,6 +23,10 @@ class Plan {
         void addFacility(Facility* facility);
         const string toString() const;
 
+        PlanStatus getPlanStatus() const;
+        selectionPolicy getSelecetionPolicy() const;
+        vector<Facility*> getUnderConstruction();
+
     private:
         int plan_id;
         const Settlement &settlement;

@@ -25,6 +25,9 @@ class Simulation {
         void close();
         void open();
 
+        vector<Plan> getPlanList();
+        vector<FacilityType> getFacilityOptions();
+
     private:
         bool isRunning;
         int planCounter; //For assigning unique plan IDs
