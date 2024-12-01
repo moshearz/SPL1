@@ -26,7 +26,7 @@ class Simulation {
         void open();
 
         vector<Plan> getPlanList();
-        vector<FacilityType> getFacilityOptions();
+        vector<FacilityType> &getFacilityOptions();
 
     private:
         bool isRunning;

@@ -20,12 +20,14 @@ class Plan {
         void step();
         void printStatus();
         const vector<Facility*> &getFacilities() const;
-        void addFacility(Facility* facility);
+        void addFacility(Facility* facility); //addFacility removes said facility from underConstruction and moves it to Facilites
         const string toString() const;
 
         PlanStatus getPlanStatus() const;
-        selectionPolicy getSelecetionPolicy() const;
-        vector<Facility*> getUnderConstruction();
+        selectionPolicy &getSelecetionPolicy() const;
+        vector<Facility*> &getUnderConstruction() const;
+        Settlement &getSettlement() const;
+        void setPlanStatus(); //updates the plan status depending on the current underConstruction list size
 
     private:
         int plan_id;
