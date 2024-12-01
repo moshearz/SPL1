@@ -25,8 +25,9 @@ class Simulation {
         void close();
         void open();
 
-        vector<Plan> getPlanList();
-        vector<FacilityType> &getFacilityOptions();
+        vector<Plan>* getPlanList() const;
+        vector<FacilityType>* getFacilityOptions() const;
+        vector<Settlement*>* getSettlementList() const;
 
     private:
         bool isRunning;
