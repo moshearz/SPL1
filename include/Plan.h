@@ -30,7 +30,7 @@ class Plan {
         void setPlanStatus(); //updates the plan status depending on the current underConstruction list size
         const int getPlanID() const;
 
-        const int getPlanID() const;
+        
 
     private:
         int plan_id;
