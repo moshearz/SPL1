@@ -47,9 +47,9 @@ bool Simulation::isSettlementExists(const string &settlementName){
     vector<Settlement*>::iterator iter; //creation of itearator ytpe of <Settlement*>
     for(iter = settlements.begin(); iter != settlements.end(); iter ++){
         if(iter-> getName() == settlementName)
-            return false;
+            return true;
     }
-    return true;
+    return false;
 }
 
 Settlement &Simulation::getSettlement(const string &settlementName){
@@ -61,10 +61,13 @@ Settlement &Simulation::getSettlement(const string &settlementName){
 Plan &Simulation::getPlan(const int planID){
     vector<Plan>::itearator iter;
     for(iter = plans.begin(); iter != plans.end(); iter++){
-        if(iter->plan_id == planID)
-            return plan
+        if(iter-> getPlanID() == planID)
+            return *iter;
     }
-  
+}
+
+void Simulation::step(){
+    
 }
 
 
