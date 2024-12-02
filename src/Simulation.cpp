@@ -32,13 +32,16 @@ void Simulation::addAction(BaseAction *action){
 }
 
 bool Simulation::addSettlement(Settlement *settlement){
-    // equals to: if (isSettlementExists((*settlement).getName())
-    //if (isSettlementExists(settlement -> getName())) return false;
+    if (isSettlementExists(settlement -> getName())) return false;
     settlements.push_back(settlement);
     return true;
 }
 
 bool Simulation::addFacility(FacilityType Facility){
+    vector<FacilityType>::itearator ft_itr;
+    for (ft_itr = facilitiesOptions -> begin(); ft_itr != facilitiesOptions -> end(); ft_itr++) {
+        if (ft_itr -> getName() == Facility.getName()) {return false;}}
+
     facilities.push_back(Facility);
     return true;
 }
@@ -66,11 +69,34 @@ Plan &Simulation::getPlan(const int planID){
     }
 }
 
-void Simulation::step(){
-    
+void Simulation::step() {
+    vector<Plan>::iterator itr;
+    for (itr = (plans -> begin()); itr != (plans -> end());) {
+        if (itr -> getPlanStatus() == PlanStatus::AVALIABLE) {
+            (itr -> getUnderConstruction()).emplace_back((itr -> getSelecetionPolicy()).selectFacility(facilitiesOptions));
+            itr -> setPlanStatus();
+        } else {
+            vector<Facility*>& ucl = itr -> getUnderConstruction();
+            vector<Facility*>::iterator itr_ucl;
+            for (itr_ucl = ucl.begin(); itr_ucl != ucl.end(); itr_ucl++) {
+                itr_ucl -> Facility::step();
+                if (itr_ucl -> getStatus() == FacilityStatus::OPERATIONAL) {
+                    itr -> addFacility(itr_ucl);
+                }
+            }
+            itr -> setPlanStatus();
+            itr++;
+        }
+    }
 }
 
-
+bool Simulation::isPlanExists(Const int& planId) const {
+    vector<Plan>::itearator p_iter;
+    for (p_iter = plans.begin(); p_iter != plans.end(); p_iter++) {
+        if (p_iter.getPlanID() == planId) {return true;}
+    }
+    return false;
+}
 
 
 

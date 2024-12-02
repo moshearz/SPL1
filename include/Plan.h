@@ -24,12 +24,12 @@ class Plan {
         const string toString() const;
 
         PlanStatus getPlanStatus() const;
-        selectionPolicy& getSelecetionPolicy() const;
+        selectionPolicy& getSelecetionPolicy() const; //add const
         vector<Facility*>& getUnderConstruction() const;
         Settlement& getSettlement() const;
         void setPlanStatus(); //updates the plan status depending on the current underConstruction list size
         const int getPlanID() const;
-
+        SelectionPolicy* createSelectionPolicy(const string& selectionPolicy) const;
         
 
     private:

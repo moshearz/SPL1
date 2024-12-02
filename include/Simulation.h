@@ -14,10 +14,10 @@ class Simulation {
     public:
         Simulation(const string &configFilePath);
         void start();
-        void addPlan(const Settlement &settlement, SelectionPolicy *selectionPolicy);
+        void addPlan(const Settlement &settlement, SelectionPolicy *selectionPolicy); //the selection policy pointer points to memory in heap
         void addAction(BaseAction *action);
-        bool addSettlement(Settlement *settlement);
-        bool addFacility(FacilityType facility);
+        bool addSettlement(Settlement *settlement); //the settlement pointer points to memory in heap
+        bool addFacility(FacilityType facility); //the facility pointer points to memory in heap
         bool isSettlementExists(const string &settlementName);
         Settlement &getSettlement(const string &settlementName);
         Plan &getPlan(const int planID);
@@ -28,6 +28,8 @@ class Simulation {
         vector<Plan>* getPlanList() const;
         vector<FacilityType>* getFacilityOptions() const;
         vector<Settlement*>* getSettlementList() const;
+        bool isPlanExists(const int& planId) const;
+        void PrintLog();
 
     private:
         bool isRunning;
