@@ -141,6 +141,7 @@ const string PrintPlanStatus::toString() const override {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//rule of 5 in changePlanPolicy
 
 ChangePlanPolicy::ChangePlanPolicy(const int _planId, const string& _newPolicy) : planId(_planId), newPolicy(_newPolicy) {}
 
