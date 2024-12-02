@@ -53,7 +53,6 @@ void Plan::step(){
      std::vector<Facility*>::itearator iter;
      for (iter = underConstruction.begin(); iter != underConstruction.end();){
             FacilityStatus currentUnderConstructionFacility = iter->step();  // Call step() to decrement timeLeft
-            //FacilityStatus currentUnderConstructionFacility = (*iter).step()
             if(currentUnderConstructionFacility == FacilityStatus::OPERATIONAL){
                 facilities.push_back(iter);  // Move to operational facilities
                 iter = underConstruction.erase(iter);  // Remove from underConstruction

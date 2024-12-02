@@ -71,23 +71,7 @@ Plan &Simulation::getPlan(const int planID){
 
 void Simulation::step() {
     vector<Plan>::iterator itr;
-    for (itr = (plans -> begin()); itr != (plans -> end());) {
-        if (itr -> getPlanStatus() == PlanStatus::AVALIABLE) {
-            (itr -> getUnderConstruction()).emplace_back((itr -> getSelecetionPolicy()).selectFacility(facilitiesOptions));
-            itr -> setPlanStatus();
-        } else {
-            vector<Facility*>& ucl = itr -> getUnderConstruction();
-            vector<Facility*>::iterator itr_ucl;
-            for (itr_ucl = ucl.begin(); itr_ucl != ucl.end(); itr_ucl++) {
-                itr_ucl -> Facility::step();
-                if (itr_ucl -> getStatus() == FacilityStatus::OPERATIONAL) {
-                    itr -> addFacility(itr_ucl);
-                }
-            }
-            itr -> setPlanStatus();
-            itr++;
-        }
-    }
+    for (itr = (plans -> begin()); itr != (plans -> end());) {itr -> step();}
 }
 
 bool Simulation::isPlanExists(Const int& planId) const {
