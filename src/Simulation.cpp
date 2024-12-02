@@ -3,16 +3,18 @@
 
 #include <vector>
 #include <string>
+#include <fstream>
 #include <iostream>
 #include <algorithm>
 
 using namespace std
 
 Simulation::Simulation(const string &configFilePath) : isRunning(false), planCounter(0){
-    ifstream configFile(configFilePath);
+    std::ifstream configFile(configFilePath);
     if(!configFile.open()){
         cout << "Failed to open"
     }
+    
 
 
 
@@ -71,7 +73,7 @@ Plan &Simulation::getPlan(const int planID){
 
 void Simulation::step() {
     vector<Plan>::iterator itr;
-    for (itr = (plans -> begin()); itr != (plans -> end());itr++) {itr -> step();}
+    for (itr = plans.begin(); itr != plans.end();itr++) {itr -> Plan::step();}
 }
 
 bool Simulation::isPlanExists(Const int& planId) const {
