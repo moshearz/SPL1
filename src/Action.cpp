@@ -7,6 +7,7 @@ using namespace std;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//Empty Constructor 
 
 ActionStatus BaseAction::getStatus() const {
     return status;
@@ -83,8 +84,12 @@ AddPlan* AddPlan::clone() const override {
 AddSettlement::AddSettlement(const string &_settlementName,SettlementType _settlementType) : settlementName(_settlementName), settlementType(_settlementType) {}
 
 void AddSettlement::act(Simulation &simulation) override {
-    if (simulation.AddSettlement(new Settlement(settlementName, settlementType))) {complete();}
-    else {error("Settlement already exists");}
+    Settlement* tempSettlement = new Settlement(settlementName, settlementType);
+    if (simulation.AddSettlement(tempSettlement)) {complete();}
+    else {
+        delete tempSettlement;
+        error("Settlement already exists");
+    }
 }
 
 AddSettlement* AddSettlement::clone() const override {
@@ -103,9 +108,13 @@ AddFacility::AddFacility(const string &_facilityName, const FacilityCategory _fa
             : facilityName(_facilityName), facilityCategory(_facilityCategory), price(_price), lifeQualityScore(_lifeQualityScore), economyScore(_economyScore), environmentScore(_economyScore) {}
 
 void AddFacility::act(Simulation &simulation) override {
-    if (simulation.addFacility(new Facility(facilityName, facilityCategory, price, lifeQualityScore, economyScore, environmentScore))) {
+    Facility* tempFacility = new Facility(facilityName, facilityCategory, price, lifeQualityScore, economyScore, environmentScore)
+    if (simulation.addFacility(*tempFacility)) {
         complete();
-    } else {error("Facility already exists");}
+    } else {
+        delete tempFacility;
+        error("Facility already exists");
+    }
 }
 
 AddFacility* AddFacility::clone() const override {

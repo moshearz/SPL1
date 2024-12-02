@@ -71,7 +71,7 @@ Plan &Simulation::getPlan(const int planID){
 
 void Simulation::step() {
     vector<Plan>::iterator itr;
-    for (itr = (plans -> begin()); itr != (plans -> end());) {itr -> step();}
+    for (itr = (plans -> begin()); itr != (plans -> end());itr++) {itr -> step();}
 }
 
 bool Simulation::isPlanExists(Const int& planId) const {
