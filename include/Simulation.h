@@ -25,11 +25,7 @@ class Simulation {
         void close();
         void open();
 
-        vector<Plan>* getPlanList() const;
-        vector<FacilityType>* getFacilityOptions() const;
-        vector<Settlement*>* getSettlementList() const;
         bool isPlanExists(const int& planId) const;
-        void PrintLog();
 
     private:
         bool isRunning;

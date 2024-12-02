@@ -20,7 +20,7 @@ void BaseAction::complete() {
 void BaseAction::error(string _errorMsg) {
     errorMsg = _errorMsg;
     status = ActionStatus::ERROR;
-    cout << "Error: " + errorMsg;
+    cout << "Error: " << errorMsg;
 }
 
 const string &BaseAction::getErrorMsg() const {
@@ -39,7 +39,7 @@ void SimulateStep::act(Simulation &simulation) override {
 }
 
 const string SimulateStep::toString() const override {
-    return "Number Of Steps: " + numOfSteps;
+    return "step " << numOfSteps << (status == ActionStatus::COMPLETED ? " COMPLETED" : " ERROR");
 }
 
 SimulateStep* SimulateStep::clone() const override {
@@ -70,7 +70,7 @@ void AddPlan::act(Simulation &simulation) override {
 }
 
 const string AddPlan::toString() const override {
-    return "Settlement Name: " + settlementName + " Selection Policy: " + selectionPolicy;
+    return "plan " << settlementName << " " << selectionPolicy.getType() << (status == ActionStatus::COMPLETED ? " COMPLETED" : " ERROR");
 }
 
 AddPlan* AddPlan::clone() const override {
@@ -97,7 +97,9 @@ AddSettlement* AddSettlement::clone() const override {
 }
 
 const string AddSettlement::toString() const override {
-    return "Settlement Name: " + settlementName + " Settlement Type: " + settlementType;
+    return "settlement " << settlementName
+    << (settlementType == SettlementType::VILLAGE ? " 0" : (settlementType == SettlementType::CITY ? " 1" : " 2"))
+    << (status == ActionStatus::COMPLETED ? " COMPLETED" : " ERROR");
 }
 
 
@@ -122,8 +124,9 @@ AddFacility* AddFacility::clone() const override {
 }
 
 const string AddFacility::toString() const override {
-    return "Facility Name: " + facilityName + " Facility Category: " + facilityCategory + " Price: " + price + " Life Quality Score: " 
-            + lifeQualityScore + " Economy Score: " + economyScore + " Environment Score: " + environmentScore;
+    return "facility " << facilityName << (facilityCategory == FacilityCategory::LIFE_QUALITY ? " 0 " : (facilityCategory == FacilityCategory::ECONOMY ? " 1 " : " 2 "))
+    << price << " " << lifeQualityScore << " " << economyScore << " " << environmentScore
+    << (status == ActionStatus::COMPLETED ? " COMPLETED" : " ERROR");
 }
 
 
@@ -144,7 +147,7 @@ PrintPlanStatus* PrintPlanStatus::clone() const override {
 }
 
 const string PrintPlanStatus::toString() const override {
-    return "Plan ID: " + planId;
+    return "planStatus " << planId << (status == ActionStatus::COMPLETED ? " COMPLETED" : " ERROR");
 }
 
 
@@ -163,9 +166,7 @@ void ChangePlanPolicy::act(Simulation &simulation) override {
         }
     }
     if (!simulation.isPlanExists(planId) or errorCatch) {error("Cannot change selection policy");}
-    else if (simulation.getPlan(planId).getSelecetionPolicy().getType() == newPolicy) {
-        error("Cannot change selection policy");
-    } else {
+    else {
         simulation.getPlan(planId).setSelectionPolicy(Plan::createSelectionPolicy(newPolicy));
         complete();
     }
@@ -176,7 +177,7 @@ ChangePlanPolicy* ChangePlanPolicy::clone() const override {
 }
 
 const string ChangePlanPolicy::toString() const override {
-    return "Plan ID: " + planId + " New Selection Policy: " + newPolicy;
+    return "changePolicy " << planId << " " << newPolicy << (status == ActionStatus::COMPLETED ? " COMPLETED" : " ERROR");
 }
 
 
@@ -186,7 +187,9 @@ const string ChangePlanPolicy::toString() const override {
 PrintActionsLog::PrintActionsLog() {}
 
 void PrintActionsLog::act(Simulation &simulation) override {
-    simulation.PrintLog();
+    for (BaseAction* actionLine : actionsLog) {
+        cout << actionLine -> toString() << "\n";}
+    
     complete();
 }
 
@@ -195,7 +198,7 @@ PrintActionsLog* PrintActionsLog::clone() const override {
 }
 
 const string PrintActionsLog::toString() const override {
-    return "Prints Actions Log";
+    return "log" << (status == ActionStatus::COMPLETED ? " COMPLETED" : " ERROR");
 }
 
 
@@ -214,7 +217,7 @@ BackupSimulation* Close::clone() const override {
 }
 
 const string Close::toString() const override {
-    return "Prints results and closes the simulation";
+    return "close" << (status == ActionStatus::COMPLETED ? " COMPLETED" : " ERROR");
 }
 
 
@@ -236,7 +239,7 @@ BackupSimulation* BackupSimulation::clone() const override {
 }
 
 const string BackupSimulation::toString() const override {
-    return "Backups the current simulation state as is";
+    return "backup" << (status == ActionStatus::COMPLETED ? " COMPLETED" : " ERROR");
 }
 
 
@@ -258,5 +261,5 @@ RestoreSimulation* RestoreSimulation::clone() const override {
 }
 
 const string RestoreSimulation::toString() const override {
-    return "Restores to the last saved simulation state";
+    return "restore" << (status == ActionStatus::COMPLETED ? " COMPLETED" : " ERROR");
 }
