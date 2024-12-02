@@ -9,20 +9,72 @@
 
 using namespace std
 
+
+// ===CONSTRUCTOR===
+
 Simulation::Simulation(const string &configFilePath) : isRunning(false), planCounter(0){
+
     std::ifstream configFile(configFilePath);
-    if(!configFile.open()){
-        cout << "Failed to open"
-    }
-    
 
+    if(!configFile.open()){ throw std::runtime_error("Unable to open configuration file");}
 
+    string line;
+    while (std::getline(configFile, line)) {
+
+        if (line.empty() || line[0] == '#') continue;
+
+        std::istringstream streammm(line);  
+        string req_data;
+        streammm >> req_data;  
+
+        if (req_data == "settlement"){
+
+            string name;
+            int typeInt;
+            stream >> name >> typeInt;
+
+            AddSettlement::AddSettlement(name, static_cast<SettlementType>(typeInt));
+        }
+
+        if (req_data == "facility"){
+
+            string name;
+            int category, price, life_quality_score, economy_score, environment_score;
+            stream >> name >> category >> price >> life_quality_score >> economy_score >> environment_score;
+
+            AddFacility::AddFacility(name, category, price, life_quality_score, economy_score, environment_score);
+
+        }
+
+        if (req_data == "plan"){
+
+            string nameOfPlan, selectionPolicyForPlan;
+            stream >> name >> selectionPolicy;
+            
+            SelectionPolicy* spForPlanCfile = nullptr;
+
+            if (selectionPolicyForPlan == "nve"){ spForPlanCfile = new NaiveSelection();}
+
+            if (selectionPolicyForPlan == "bal"){ spForPlanCfile = new BalancedSelection();}
+
+            if (selectionPolicyForPlan == "eco"){ spForPlanCfile = new EconomySelection();}
+
+            if (selectionPolicyForPlan == "evn"){ spForPlanCfile = new SustainabilitySelection();}
+
+            AddPlan::AddPlan(nameOfPlanm, selectionPolicyForPlan);
+        
+        }
+
+        configFile.close();
+            
+        }
 
 }
 
+
 void Simulation::start(){
     isRunning = true;
-    std::cout << "Simulation started. " << std::end1; 
+    std::cout << "The simulation has started. " << std::end1; 
 }
 
 void Simulation::addPlan(const Settlement &settlement, SelectionPolicy *selectionPolicy){
@@ -74,6 +126,23 @@ Plan &Simulation::getPlan(const int planID){
 void Simulation::step() {
     vector<Plan>::iterator itr;
     for (itr = plans.begin(); itr != plans.end();itr++) {itr -> Plan::step();}
+}
+
+void Simulation::close(){
+
+}
+
+void Simulation::open(){
+
+    string input;
+
+    while(isRunning){
+        cout << "Please enter an action to execute" << end1;
+
+
+
+    }
+
 }
 
 bool Simulation::isPlanExists(Const int& planId) const {
