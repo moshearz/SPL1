@@ -217,19 +217,18 @@ void Simulation::open(){
             ChangePlanPolicy::ChangePlanPolicy(plan_id, selection_policy).act(*this);
         }
 
-        else if
+        else if (inputStreamm == "log"){
 
+            PrintActionsLog::PrintActionsLog().act(*this);
+        }
 
+        else if (inputStreamm == "backup") BackupSimulation::BackupSimulation().act(*this);
 
+        else if(inputStreamm == "restore") RestoreSimulation::RestoreSimulation().act(*this);
 
+        else if (inputStreamm == "close") Simulation::close();
 
-
-
-
-
-
-
-
+        else cout << "Invalid method. Please try again."
 
     }
 
