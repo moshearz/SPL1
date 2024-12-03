@@ -19,7 +19,7 @@ const string NaiveSelection::toString() override {
     return "nve";
 }
 
-NaiveSelection * NaiveSelection::clone() const  override {
+NaiveSelection* NaiveSelection::clone() const  override {
     return new NaiveSelection(*this);
 }
 
@@ -50,7 +50,7 @@ const string BalancedSelection::toString() override {
     return "bal";
 }
 
-BalancedSelection * BalancedSelection::clone() const override {
+BalancedSelection* BalancedSelection::clone() const override {
     return new BalancedSelection(*this);
 }
 
@@ -71,10 +71,10 @@ const FacilityType& EconomySelection::selectFacility(const vector<FacilityType>&
         }
     }
     // if there were no more economy type facilities left until the end of the vector it wraps back to the beginning of the vector to look for the next one
-    for (vector<FacilityType>::iterator f_itr_2 = facilitiesOptions.begin(); f_itr_2 != facilitiesOptions.end(); f_itr_2++) {
-        if (f_itr_2 -> getCategory() == FacilityCategory::ECONOMY) {
-            lastSelectedIndex = std::distance(facilitiesOptions.begin(), f_itr_2);
-            return *f_itr_2;
+    for (start = facilitiesOptions.start; start != facilitiesOptions.end(); start++) {
+        if (start -> getCategory() == FacilityCategory::ECONOMY) {
+            lastSelectedIndex = std::distance(facilitiesOptions.begin(), start);
+            return *start;
         }
     }
 }
@@ -104,10 +104,10 @@ const FacilityType& SustainabilitySelection::selectFacility(const vector<Facilit
         }
     }
     // if there were no more enviroment type facilities left until the end of the vector it wraps back to the beginning of the vector to look for the next one
-    for (vector<FacilityType>::iterator f_itr_2 = facilitiesOptions.begin(); f_itr_2 != facilitiesOptions.end(); f_itr_2++) {
-        if (f_itr_2 -> getCategory() == FacilityCategory::ENVIRONMENT) {
-            lastSelectedIndex = std::distance(facilitiesOptions.begin(), f_itr_2);
-            return *f_itr_2;
+    for (start = facilitiesOptions.begin(); start != facilitiesOptions.end(); start++) {
+        if (start -> getCategory() == FacilityCategory::ENVIRONMENT) {
+            lastSelectedIndex = std::distance(facilitiesOptions.begin(), start);
+            return *start;
         }
     }
 }

@@ -23,7 +23,7 @@ void BaseAction::error(string _errorMsg) {
     cout << "Error: " << errorMsg;
 }
 
-const string &BaseAction::getErrorMsg() const {
+const string& BaseAction::getErrorMsg() const {
     return errorMsg;
 }
 
@@ -50,7 +50,8 @@ SimulateStep* SimulateStep::clone() const override {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-AddPlan::AddPlan(const string& _settlementName, const string& _selectionPolicy) : settlementName(_settlementName), selectionPolicy(_selectionPolicy) {}
+AddPlan::AddPlan(const string& _settlementName, const string& _selectionPolicy) 
+: settlementName(_settlementName), selectionPolicy(_selectionPolicy) {}
 
 void AddPlan::act(Simulation &simulation) override {
     bool errorCatch = true;
@@ -81,7 +82,8 @@ AddPlan* AddPlan::clone() const override {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-AddSettlement::AddSettlement(const string &_settlementName,SettlementType _settlementType) : settlementName(_settlementName), settlementType(_settlementType) {}
+AddSettlement::AddSettlement(const string& _settlementName, SettlementType _settlementType) 
+: settlementName(_settlementName), settlementType(_settlementType) {}
 
 void AddSettlement::act(Simulation &simulation) override {
     Settlement* tempSettlement = new Settlement(settlementName, settlementType);
@@ -106,8 +108,8 @@ const string AddSettlement::toString() const override {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-AddFacility::AddFacility(const string &_facilityName, const FacilityCategory _facilityCategory, const int _price, const int _lifeQualityScore, const int _economyScore, const int _environmentScore)
-            : facilityName(_facilityName), facilityCategory(_facilityCategory), price(_price), lifeQualityScore(_lifeQualityScore), economyScore(_economyScore), environmentScore(_economyScore) {}
+AddFacility::AddFacility(const string& _facilityName, const FacilityCategory _facilityCategory, const int _price, const int _lifeQualityScore, const int _economyScore, const int _environmentScore)
+            : facilityName(_facilityName), facilityCategory(_facilityCategory), price(_price), lifeQualityScore(_lifeQualityScore), economyScore(_economyScore), environmentScore(_environmentScore) {}
 
 void AddFacility::act(Simulation &simulation) override {
     Facility tempFacility = FacilityType(facilityName, facilityCategory, price, lifeQualityScore, economyScore, environmentScore)
@@ -164,8 +166,9 @@ void ChangePlanPolicy::act(Simulation &simulation) override {
             break;
         }
     }
-    if (!simulation.isPlanExists(planId) or errorCatch) {error("Cannot change selection policy");}
-    else {
+    if (!simulation.isPlanExists(planId) or errorCatch or newPolicy == simulation.getPlan(planId).toString()) {
+        error("Cannot change selection policy");
+    } else {
         simulation.getPlan(planId).setSelectionPolicy(Plan::createSelectionPolicy(newPolicy));
         complete();
     }
@@ -186,9 +189,7 @@ const string ChangePlanPolicy::toString() const override {
 PrintActionsLog::PrintActionsLog() {}
 
 void PrintActionsLog::act(Simulation &simulation) override {
-    for (BaseAction* actionLine : actionsLog) {
-        cout << actionLine -> toString() << "\n";}
-    
+    simulation.printActionsLog();
     complete();
 }
 

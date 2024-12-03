@@ -14,15 +14,14 @@ const int Plan::getEconomyScore() const { return economy_score;}
 const int Plan::getEnvironmentScore() const { return environment_score;}
 
 void Plan::setSelectionPolicy(SelectionPolicy* _selectionPolicy) {
-    if (_selectionPolicy.toStringe() == selectionPolicy.toString()) {Action::error("Cannot change selection policy");}
-    else {*selectionPolicy = *_selectionPolicy;}
+    *selectionPolicy = *_selectionPolicy; //maybe add a copy/move assignment operator
 }
 
 void Plan::step() {
     //Stage 1: if the PlanStatus in "AVALIABLE" move to satge 2
      if (status == PlanStatus::AVALIABLE){
         //stage 2
-        int constructonLimit = static_cast<int>(settlement.getType() + 1;
+        int constructonLimit = static_cast<int>(settlement.getType()) + 1;
         while (underConstruction.size() < constructonLimit){
             addFacility(new Facility(selectionPolicy->selectFacility(facilityOptions)), settlement.getName());
         }
@@ -30,16 +29,11 @@ void Plan::step() {
 
      //Stage 3 (Now the PlanStatus is BUSY)
      std::vector<Facility*>::itearator iter;
-     for (iter = underConstruction.begin(); iter != underConstruction.end(); iter++) {
-            // FacilityStatus currentUnderConstructionFacility = iter -> Facility::step();  // Call step() to decrement timeLeft
-            // if(currentUnderConstructionFacility == FacilityStatus::OPERATIONAL){
-            //     facilities.push_back(iter);  // Move to operational facilities
-            //     iter = underConstruction.erase(iter);  // Remove from underConstruction
-            // } else {
-            //     iter++;
-            // }
+     for (iter = underConstruction.begin(); iter != underConstruction.end();) {
             iter -> Facility::step();
-            addFacility(iter);
+            vector<Facility*>* cur_facility = iter;
+            iter++
+            addFacility(cur_facility);
      }
      //Stage 4
      if (underConstruction.size() == static_cast<int>(settlement.getType() + 1)) {
@@ -103,9 +97,6 @@ void printFinalStatus() const {
     cout << oss.str();
 
     delete selectionPolicy;
-    vector<Facility*>::iterator f_itr;
-    for (f_itr = facilities.begin(); f_itr != facilities.end(); f_itr++) {
-        delete *f_itr;}
-    for (f_itr = underConstruction.begin(); f_itr != underConstruction.end(); f_itr++) {
-        delete *f_itr;}
+    for (Facility* fa : facilities) {delete fa;}
+    for (Facility* uc_fa : underConstruction) {delete uc_fa;}
 }
