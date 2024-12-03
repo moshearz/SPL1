@@ -92,7 +92,7 @@ bool Simulation::isSettlementExists(const string &settlementName) {
 }
 
 Settlement& Simulation::getSettlement(const string &settlementName) {
-    for (settlement : settlements){
+    for (Settlement* settlement : settlements){
         if (settlement->getName() == settlementName) return *settlement;}
 }
 

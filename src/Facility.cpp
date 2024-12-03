@@ -11,23 +11,23 @@ const string& FacilityType::getName() const {
     return name;
 }
 
-int FacilityType::getCost() const { // Return by value
+int FacilityType::getCost() const { 
     return price;
 }
 
-int FacilityType::getLifeQualityScore() const { // Return by value
+int FacilityType::getLifeQualityScore() const { 
     return lifeQuality_score;
 }
 
-int FacilityType::getEnvironmentScore() const { // Return by value
+int FacilityType::getEnvironmentScore() const { 
     return environment_score;
 }
 
-int FacilityType::getEconomyScore() const { // Return by value
+int FacilityType::getEconomyScore() const { 
     return economy_score;
 }
 
-FacilityCategory FacilityType::getCategory() const { // Return by value
+FacilityCategory FacilityType::getCategory() const { 
     return category;
 }
 
@@ -46,11 +46,11 @@ const string& Facility::getSettlementName() const {
     return settlementName;
 }
 
-int Facility::getTimeLeft() const { // Return by value
+int Facility::getTimeLeft() const { 
     return timeLeft;
 }
 
-FacilityStatus Facility::step() { // Return by value
+FacilityStatus Facility::step() { 
     if (timeLeft > 0) {
         --timeLeft;
         if (timeLeft == 0) {
@@ -60,15 +60,15 @@ FacilityStatus Facility::step() { // Return by value
     return status;
 }
 
-void Facility::setStatus(FacilityStatus _status) { // Return void
+void Facility::setStatus(FacilityStatus _status) { 
     status = _status;
 }
 
-const FacilityStatus& Facility::getStatus() const { // Return const reference
+const FacilityStatus& Facility::getStatus() const { 
     return status;
 }
 
-string Facility::toString() const { // Return by value
+string Facility::toString() const { 
     std::ostringstream oss;
     oss << "Facility: " << getName() << ", Settlement: " << settlementName
         << ", Status: " << (status == FacilityStatus::UNDER_CONSTRUCTIONS ? "Under Construction" : "Operational")

@@ -57,7 +57,7 @@ void AddPlan::act(Simulation &simulation) override {
     bool errorCatch = true;
     for (const string sp : {"nve", "bal", "eco", "env"}) {
         if (sp == selectionPolicy) {
-            errorCatch = false;
+            errorCatch  = false;
             break;
         }
     }
