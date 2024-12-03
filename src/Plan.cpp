@@ -81,7 +81,6 @@ const string toString() const {
     return "Plan ID: " + plan_id + settlement + *selectionPolicy + "Status: " + status + "Score: " + life_quality_score + " " + economy_score + " " + environment_score;
 }
 
-selectionPolicy& Plan::getSelecetionPolicy() const { return *selectionPolicy;}
 
 
 //Now, lets move to all the setters 
