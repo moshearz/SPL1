@@ -3,10 +3,10 @@
 //Origin: https://www.geeksforgeeks.org/stringstream-c-applications/
 #include <sstream>
 
-Settlement::Settlement(const string &name, SettlementType)
-    : name(name), type(type) {}
+Settlement::Settlement(const string& _name, SettlementType _type)
+    : name(_name), type(_type) {}
 
-const string &Settlement::getName() const{ return name; }
+const string& Settlement::getName() const { return name; }
 
 SettlementType Settlement::getType() const { return type; }
 
@@ -28,13 +28,3 @@ const string Settlement::toString() const {
     }
     return result;
 }
-
-int Settlement::getConstructionLimit() const {
-    switch (type) {
-        case SettlementType::VILLAGE: return 1; // Villages can build 1 facility at a time
-        case SettlementType::CITY: return 2;    // Cities can build 2 facilities at a time
-        case SettlementType::METROPOLIS: return 3; // Metropolises can build 3 facilities at a time
-        default: return 0; // Default case to catch Errors
-    }
-}
-

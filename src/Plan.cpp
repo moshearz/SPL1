@@ -22,7 +22,7 @@ void Plan::step() {
     //Stage 1: if the PlanStatus in "AVALIABLE" move to satge 2
      if (status == PlanStatus::AVALIABLE){
         //stage 2
-        int constructonLimit = settlement.getConstructionLimit();
+        int constructonLimit = static_cast<int>(settlement.getType() + 1;
         while (underConstruction.size() < constructonLimit){
             addFacility(new Facility(selectionPolicy->selectFacility(facilityOptions)), settlement.getName());
         }
@@ -42,7 +42,7 @@ void Plan::step() {
             addFacility(iter);
      }
      //Stage 4
-     if (underConstruction.size() == settlement.getConstructionLimit()) {
+     if (underConstruction.size() == static_cast<int>(settlement.getType() + 1)) {
         status = PlanStatus::BUSY;}
     else {status = PlanStatus::AVALIABLE;}
 }
