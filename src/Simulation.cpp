@@ -137,7 +137,7 @@ void Simulation::open(){
     string input;
 
     while(isRunning){
-        cout << "Please enter an action to execute" << end1;
+        STD::cout << "Please enter an action to execute" << end1;
 
 
 
