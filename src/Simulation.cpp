@@ -1,9 +1,11 @@
 #include "Simulation.h"
-#include "Plan"
+#include "Plan.h"
+#include "Action.h"
 
 #include <vector>
 #include <string>
 #include <fstream>
+#include <sstream>
 #include <iostream>
 #include <algorithm>
 
@@ -13,8 +15,6 @@ using namespace std;
 // ===============================================CONSTRUCTOR=================================================
 Simulation::Simulation(const string &configFilePath) : isRunning(false), planCounter(0) {
     std::ifstream configFile(configFilePath);
-
-    if(!configFile.open()){ throw std::runtime_error("Unable to open configuration file");}
 
     string line;
     while (std::getline(configFile, line)){
@@ -74,7 +74,7 @@ bool Simulation::addSettlement(Settlement *settlement) {
 }
 
 bool Simulation::addFacility(FacilityType Facility) {
-    vector<FacilityType>::itearator ft_itr;
+    vector<FacilityType>::iterator ft_itr;
     for (ft_itr = facilitiesOptions.begin(); ft_itr != facilitiesOptions.end(); ft_itr++) {
         if (ft_itr->getName() == Facility.getName()) return false;
     }
@@ -97,7 +97,7 @@ Settlement& Simulation::getSettlement(const string &settlementName) {
 }
 
 Plan& Simulation::getPlan(const int planID){
-    vector<Plan>::itearator iter;
+    vector<Plan>::iterator iter;
     for(iter = plans.begin(); iter != plans.end(); iter++){
         if(iter->getPlanID() == planID)
             return *iter;
@@ -185,7 +185,7 @@ void Simulation::open(){
         
         else if (command == "backup") {BackupSimulation().act(*this);}
 
-        else if(command == "restore") {RestoreSimulation::RestoreSimulation().act(*this);}
+        else if(command == "restore") {RestoreSimulation().act(*this);}
 
         else if (command == "close") {close();}
 
@@ -195,10 +195,10 @@ void Simulation::open(){
 
 }
 
-bool Simulation::isPlanExists(Const int& planId) const {
-    vector<Plan>::itearator p_iter;
-    for (p_iter=plans.begin(); p_iter!=plans.end(); p_iter++) {
-        if (p_iter->getPlanID() == planId) 
+bool Simulation::isPlanExists(const int& planId) const {
+    vector<Plan>::iterator p_itr;
+    for (p_itr = plans.begin(); p_itr != plans.end(); p_itr++) {
+        if (p_itr->getPlanID() == planId) 
             return true;
     }
     return false;
@@ -207,4 +207,11 @@ bool Simulation::isPlanExists(Const int& planId) const {
 void Simulation::printActionsLog() const{
     for (BaseAction* actionLine : actionsLog) {
         cout << actionLine -> toString() << "\n";}
+}
+
+SelectionPolicy* createSelectionPolicy(const string& _selectionPolicy, int _life_quality_score, int _economy_score, int _enviroment_score) const {
+    if (_selectionPolicy == "nve") {return new NaiveSelection();}
+    else if (_selectionPolicy == "bal") {return new BalancedSelection(_life_quality_score, _economy_score, _enviroment_score);}
+    else if (_selectionPolicy == "eco") {return new EconomySelection();}
+    else {return new SustainabilitySelection();}
 }

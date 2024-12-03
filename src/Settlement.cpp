@@ -1,7 +1,4 @@
 #include "Settlement.h"
-//A stringstream associates a string object with a stream allowing you to read from the string as if it were a stream (like cin).
-//Origin: https://www.geeksforgeeks.org/stringstream-c-applications/
-#include <sstream>
 
 Settlement::Settlement(const string& _name, SettlementType _type)
     : name(_name), type(_type) {}
