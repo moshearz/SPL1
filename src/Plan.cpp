@@ -64,7 +64,7 @@ void Plan::printStatus() {
             << "\nFacilityName: " << fa -> getName();
             << "\nFacilityStatus: " << "UNDER CONSTRUCTION";
         }
-    return oss.str();
+    cout << oss.str();
 }
 
 const vector<Facility*>& Plan::getFacilities() const {return facilities;}
@@ -90,4 +90,22 @@ SelectionPolicy* Plan::createSelectionPolicy(const string& _selectionPolicy) con
     else if (_selectionPolicy == "bal") {return new BalancedSelection::BalancedSelection(life_quality_score, economy_score, environment_score);}
     else if (_selectionPolicy == "eco") {return new EconomyScore::EconomyScore();}
     else {return new SustainabilitySelection::SustainabilitySelection(;)}
+}
+
+void printFinalStatus() const {
+    std::ostringstream oss;
+    oss << "PlanID: " << plan_id 
+        << "\nSettlementName: " << settlement.getName()
+        << "\nSelectionPolicy: " << selectFacility.getType()
+        << "\nLifeQualityScore: " << life_quality_score
+        << "\nEconomyScore: " << economy_score
+        << "\nEnviromentScore: " << environment_score
+    cout << oss.str();
+
+    delete selectionPolicy;
+    vector<Facility*>::iterator f_itr;
+    for (f_itr = facilities.begin(); f_itr != facilities.end(); f_itr++) {
+        delete *f_itr;}
+    for (f_itr = underConstruction.begin(); f_itr != underConstruction.end(); f_itr++) {
+        delete *f_itr;}
 }

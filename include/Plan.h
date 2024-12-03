@@ -25,6 +25,7 @@ class Plan {
 
         const int getPlanID() const;
         SelectionPolicy* createSelectionPolicy(const string& selectionPolicy) const;
+        void printFinalStatus() const;
         
 
     private:

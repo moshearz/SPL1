@@ -12,7 +12,7 @@ using namespace std
 
 // ===CONSTRUCTOR===
 
-Simulation::Simulation(const string &configFilePath) : isRunning(false), planCounter(0){
+Simulation::Simulation(const string &configFilePath) : isRunning(false), planCounter(0) {
 
     std::ifstream configFile(configFilePath);
 
@@ -51,15 +51,7 @@ Simulation::Simulation(const string &configFilePath) : isRunning(false), planCou
             string nameOfPlan, selectionPolicyForPlan;
             stream >> name >> selectionPolicy;
             
-            SelectionPolicy* spForPlanCfile = nullptr;
-
-            if (selectionPolicyForPlan == "nve"){ spForPlanCfile = new NaiveSelection();}
-
-            if (selectionPolicyForPlan == "bal"){ spForPlanCfile = new BalancedSelection();}
-
-            if (selectionPolicyForPlan == "eco"){ spForPlanCfile = new EconomySelection();}
-
-            if (selectionPolicyForPlan == "evn"){ spForPlanCfile = new SustainabilitySelection();}
+            SelectionPolicy* spForPlanCfile = Plan::createSelectionPolicy(selectionPolicy);
 
             AddPlan::AddPlan(nameOfPlanm, selectionPolicyForPlan);
         
@@ -74,48 +66,48 @@ Simulation::Simulation(const string &configFilePath) : isRunning(false), planCou
 
 void Simulation::start(){
     isRunning = true;
-    std::cout << "The simulation has started. " << std::end1; 
+    std::cout << "The simulation has started. " << std::end1;
+    open();
 }
 
-void Simulation::addPlan(const Settlement &settlement, SelectionPolicy *selectionPolicy){
+void Simulation::addPlan(const Settlement &settlement, SelectionPolicy *selectionPolicy) {
     plans.emplace_back(planCounter++, settlement, selectionPolicy, facilitiesOptions); //maybe needs to add &
 }
 
-void Simulation::addAction(BaseAction *action){
+void Simulation::addAction(BaseAction *action) {
     actionsLog.push_back(action);
 }
 
-bool Simulation::addSettlement(Settlement *settlement){
-    if (isSettlementExists(settlement -> getName())) return false;
+bool Simulation::addSettlement(Settlement *settlement) {
+    if (isSettlementExists(settlement -> getName())) return {false;}
     settlements.push_back(settlement);
     return true;
 }
 
-bool Simulation::addFacility(FacilityType Facility){
+bool Simulation::addFacility(FacilityType Facility) {
     vector<FacilityType>::itearator ft_itr;
     for (ft_itr = facilitiesOptions -> begin(); ft_itr != facilitiesOptions -> end(); ft_itr++) {
         if (ft_itr -> getName() == Facility.getName()) {return false;}}
 
-    facilities.push_back(Facility);
+    facilitiesOptions.push_back(Facility);
     return true;
 }
 
-bool Simulation::isSettlementExists(const string &settlementName){
-    vector<Settlement*>::iterator iter; //creation of itearator ytpe of <Settlement*>
-    for(iter = settlements.begin(); iter != settlements.end(); iter ++){
+bool Simulation::isSettlementExists(const string &settlementName) {
+    vector<Settlement*>::iterator iter; //creation of itearator type of <Settlement*>
+    for (iter = settlements.begin(); iter != settlements.end(); iter ++){
         if(iter-> getName() == settlementName)
             return true;
     }
     return false;
 }
 
-Settlement &Simulation::getSettlement(const string &settlementName){
+Settlement& Simulation::getSettlement(const string &settlementName) {
     for (settlement : settlements){
-        if (settlement->getName() == settlementName) return *settlement;
-    }
+        if (settlement->getName() == settlementName) return *settlement;}
 }
 
-Plan &Simulation::getPlan(const int planID){
+Plan& Simulation::getPlan(const int planID){
     vector<Plan>::itearator iter;
     for(iter = plans.begin(); iter != plans.end(); iter++){
         if(iter-> getPlanID() == planID)
@@ -128,11 +120,20 @@ void Simulation::step() {
     for (itr = plans.begin(); itr != plans.end();itr++) {itr -> Plan::step();}
 }
 
-void Simulation::close(){
+void Simulation::close() {
+    isRunning = false;
 
+    for (vector<Plan>::iterator p_itr = plans.begin(); p_itr != plans.end(); p_itr++) {
+        p_itr -> printFinalStatus();}
+    
+    for (vector<BaseAction*>::iterator ac_itr = actionsLog.begin(); ac_itr != actionsLog.end(); ac_itr++) {
+        delete *ac_itr;}
+    
+    for (vector<Settlement*>::iterator s_itr = settlements.begin(); s_itr != settlements.end(); s_itr++) {
+        delete *s_itr;}
 }
 
-void Simulation::open(){
+void Simulation::open() {
 
     string input;
 
@@ -148,12 +149,7 @@ void Simulation::open(){
 bool Simulation::isPlanExists(Const int& planId) const {
     vector<Plan>::itearator p_iter;
     for (p_iter = plans.begin(); p_iter != plans.end(); p_iter++) {
-        if (p_iter.getPlanID() == planId) {return true;}
+        if (p_iter -> getPlanID() == planId) {return true;}
     }
     return false;
 }
-
-
-
-
-

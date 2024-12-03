@@ -110,11 +110,10 @@ AddFacility::AddFacility(const string &_facilityName, const FacilityCategory _fa
             : facilityName(_facilityName), facilityCategory(_facilityCategory), price(_price), lifeQualityScore(_lifeQualityScore), economyScore(_economyScore), environmentScore(_economyScore) {}
 
 void AddFacility::act(Simulation &simulation) override {
-    Facility* tempFacility = new Facility(facilityName, facilityCategory, price, lifeQualityScore, economyScore, environmentScore)
-    if (simulation.addFacility(*tempFacility)) {
+    Facility tempFacility = FacilityType(facilityName, facilityCategory, price, lifeQualityScore, economyScore, environmentScore)
+    if (simulation.addFacility(tempFacility)) {
         complete();
     } else {
-        delete tempFacility;
         error("Facility already exists");
     }
 }
