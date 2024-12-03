@@ -14,7 +14,7 @@ const int Plan::getEconomyScore() const { return economy_score;}
 const int Plan::getEnvironmentScore() const { return environment_score;}
 
 void Plan::setSelectionPolicy(SelectionPolicy* _selectionPolicy) {
-    if (_selectionPolicy.getType() == selectionPolicy.getType()) {Action::error("Cannot change selection policy");}
+    if (_selectionPolicy.toStringe() == selectionPolicy.toString()) {Action::error("Cannot change selection policy");}
     else {*selectionPolicy = *_selectionPolicy;}
 }
 
@@ -52,7 +52,7 @@ void Plan::printStatus() {
     oss << "PlanID: " << plan_id 
         << "\nSettlementName: " << settlement.getName()
         << "\nPlanStatus: " << (status == PlanStatus::BUSY ? "BUSY" : "AVAILIABLE")
-        << "\nSelectionPolicy: " << selectFacility.getType()
+        << "\nSelectionPolicy: " << selectionPolicy -> toString()
         << "\nLifeQualityScore: " << life_quality_score
         << "\nEconomyScore: " << economy_score
         << "\nEnviromentScore: " << environment_score
@@ -96,7 +96,7 @@ void printFinalStatus() const {
     std::ostringstream oss;
     oss << "PlanID: " << plan_id 
         << "\nSettlementName: " << settlement.getName()
-        << "\nSelectionPolicy: " << selectFacility.getType()
+        << "\nSelectionPolicy: " << selectionPolicy -> toString()
         << "\nLifeQualityScore: " << life_quality_score
         << "\nEconomyScore: " << economy_score
         << "\nEnviromentScore: " << environment_score

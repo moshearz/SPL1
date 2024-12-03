@@ -1,13 +1,13 @@
 #include "Facility.h"
 #include <sstream> // For std::ostringstream
 
-FacilityType::FacilityType(const string &name, const FacilityCategory category, const int price,
-                           const int lifeQuality_score, const int economy_score, const int environment_score)
-    : name(name), category(category), price(price),
-      lifeQuality_score(lifeQuality_score), economy_score(economy_score),
-      environment_score(environment_score) {}
+FacilityType::FacilityType(const string& _name, const FacilityCategory _category, const int _price,
+                           const int _lifeQuality_score, const int _economy_score, const int _environment_score)
+    : name(_name), category(_category), price(_price),
+      lifeQuality_score(_lifeQuality_score), economy_score(_economy_score),
+      environment_score(_environment_score) {}
 
-const string &FacilityType::getName() const {
+const string& FacilityType::getName() const {
     return name;
 }
 
@@ -31,15 +31,18 @@ FacilityCategory FacilityType::getCategory() const { // Return by value
     return category;
 }
 
-Facility::Facility(const string &name, const string &settlementName, const FacilityCategory category, const int price,
-                   const int lifeQuality_score, const int economy_score, const int environment_score)
-    : FacilityType(name, category, price, lifeQuality_score, economy_score, environment_score),
-      settlementName(settlementName), status(FacilityStatus::UNDER_CONSTRUCTIONS), timeLeft(price) {}
+Facility::Facility(const string& _name, const string& _settlementName, const FacilityCategory _category, const int _price,
+    const int _lifeQuality_score, const int _economy_score, const int _environment_score)
+    : name(_name), settlementName(_settlementName), category(_category), price(_price),
+    lifeQuality_score(_lifeQuality_score), economy_score(_economy_score), environment_score(_environment_score),
+    status(FacilityStatus::UNDER_CONSTRUCTIONS), timeLeft(_price) {}
 
-Facility::Facility(const FacilityType &type, const string &settlementName)
-    : FacilityType(type), settlementName(settlementName), status(FacilityStatus::UNDER_CONSTRUCTIONS), timeLeft(type.getCost()) {}
+Facility::Facility(const FacilityType& _type, const string& _settlementName) : settlementName(_settlementName), 
+    status(FacilityStatus::UNDER_CONSTRUCTIONS), timeLeft(type.getCost()), name(_type.getName()), category(_type.getCategory()),
+    price(_type.getCost()), lifeQuality_score(_type.getLifeQualityScore()), economy_score(_type.getEconomyScore()),
+    environment_score(_type.getEnvironmentScore()) {}
 
-const string &Facility::getSettlementName() const {
+const string& Facility::getSettlementName() const {
     return settlementName;
 }
 
@@ -57,11 +60,11 @@ FacilityStatus Facility::step() { // Return by value
     return status;
 }
 
-void Facility::setStatus(FacilityStatus new_status) { // Return void
-    status = new_status;
+void Facility::setStatus(FacilityStatus _status) { // Return void
+    status = _status;
 }
 
-const FacilityStatus &Facility::getStatus() const { // Return const reference
+const FacilityStatus& Facility::getStatus() const { // Return const reference
     return status;
 }
 

@@ -16,15 +16,11 @@ const FacilityType& NaiveSelection::selectFacility(const vector<FacilityType>& f
 }
 
 const string NaiveSelection::toString() override {
-    return "Naive Selection Policy Selected";
+    return "nve";
 }
 
 NaiveSelection * NaiveSelection::clone() const  override {
     return new NaiveSelection(*this);
-}
-
-const string& NaiveSelection::getType() const override {
-    return "nve";
 }
 
 
@@ -51,15 +47,11 @@ const FacilityType& BalancedSelection::selectFacility(const vector<FacilityType>
 }
 
 const string BalancedSelection::toString() override {
-    return "Balanced Selection Policy Selected";
+    return "bal";
 }
 
 BalancedSelection * BalancedSelection::clone() const override {
     return new BalancedSelection(*this);
-}
-
-const string& BalancedSelection::getType() const override {
-    return "bal";
 }
 
 
@@ -88,15 +80,11 @@ const FacilityType& EconomySelection::selectFacility(const vector<FacilityType>&
 }
 
 const string EconomySelection::toString() const override {
-    return "The last selected index: " + lastSelectedIndex;
+    return "eco";
 }
 
 EconomySelection* EconomySelection::clone() const override {
     return new EconomySelection(*this);
-}
-
-const string& EconomySelection::getType() const override {
-    return "eco";
 }
 
 
@@ -125,13 +113,9 @@ const FacilityType& SustainabilitySelection::selectFacility(const vector<Facilit
 }
 
 const string SustainabilitySelection::toString() const override {
-    return "The last selected index: " + lastSelectedIndex;
+    return "env";
 }
 
 SustainabilitySelection* SustainabilitySelection::clone() const override {
     return new SustainabilitySelection(*this);
-}
-
-const string& SustainabilitySelection::getType() const override {
-    return "env";
 }

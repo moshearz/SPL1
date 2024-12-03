@@ -70,7 +70,7 @@ void AddPlan::act(Simulation &simulation) override {
 }
 
 const string AddPlan::toString() const override {
-    return "plan " << settlementName << " " << selectionPolicy.getType() << (status == ActionStatus::COMPLETED ? " COMPLETED" : " ERROR");
+    return "plan " << settlementName << " " << selectionPolicy.toString() << (status == ActionStatus::COMPLETED ? " COMPLETED" : " ERROR");
 }
 
 AddPlan* AddPlan::clone() const override {
