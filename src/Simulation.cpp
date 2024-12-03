@@ -133,12 +133,101 @@ void Simulation::close() {
         delete *s_itr;}
 }
 
-void Simulation::open() {
+void Simulation::open(){
 
     string input;
 
     while(isRunning){
-        STD::cout << "Please enter an action to execute" << end1;
+
+        std::cout << "Please enter an action to execute" << end1;
+        std::string actionLine;
+        std::getline(std::cin, std::actionLine);
+
+        if (actionLine.empty()) continue;
+
+        std::istringstream inputStreamm(actionLine);
+        std::sring command;
+        inputStreamm >> command;
+
+        if (inputStreamm == "step"){
+
+            int numOfSteps;
+            inputStreamm >> numOfSteps;
+            
+            //if(inputStreamm.fail() || numOfSteps <= 0). "Thia action never results an error. we can assume numOfStep is always a number"
+
+            SimulateStep::SimulateStep(3).act(*this); // this is pointer to the current object(simulation)
+
+            // this is an lvalue, but we do not need this action afterwards so we will use the upperline.
+            //SimulateStep stepFromAction = SimulateStep(3);
+           // stepFromAction.act(this);
+        }
+
+        else if (inputStreamm == "plan"){
+
+            std::sring settlement_name, selection_policy;
+            inputStreamm >> settlement_name >> selection_policy;
+
+            AddPlan::AddPlan(settlement_name, selection_policy).act(*this);
+        }
+
+        else if (inputStreamm == "settlement"){
+
+            std::string settlement_name, settlement_type;
+            inputStreamm >> settlement_name >> settlement_type;
+
+            AddSettlement::AddSettlement(settlement_name, settlement_type).act(*this);
+        }
+
+        else if (inputStreamm == "facillity"){
+
+            std::string facillity_name;
+            int category, price, lifeq_impact, eco_impact, env_impact;
+            inputStreamm >> facillity_name >> category >> price >> lifeq_impact >> eco_impact >> env_impact;
+
+            if (category == 0){
+                FacilityCategory category_convertFromInt = LIFE_QUALITY;
+            }
+            else if (category == 1){
+                FacilityCategory category_convertFromInt = ECONOMY;
+            
+            }
+            else (category == 2){
+                FacilityCategory category_convertFromInt = ENVIRONMENT;
+            }
+
+            AddFacility::AddFacility(facillity_name, category_convertFromInt, price, lifeq_impact,eco_impact,eco_impact, env_impact).act(*this);
+
+        }
+
+        else if (inputStreamm == "planStatus"){
+
+            int plan_id;
+            inputStreamm >> plan_id;
+
+            PrintPlanStatus::PrintPlanStatus(plan_id).act(*this);
+        }
+
+        else if (inputStreamm == "changePolicy"){
+
+            int plan_id;
+            std::string selection_policy;
+            inputStreamm >> plan_id >> selection_policy;
+
+            ChangePlanPolicy::ChangePlanPolicy(plan_id, selection_policy).act(*this);
+        }
+
+        else if
+
+
+
+
+
+
+
+
+
+
 
 
 
