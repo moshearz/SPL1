@@ -77,10 +77,17 @@ void Plan::addFacility(Facility* facility) {
     }
 }
 
-const string toString() const {
-    return "Plan ID: " + plan_id + settlement + *selectionPolicy + "Status: " + status + "Score: " + life_quality_score + " " + economy_score + " " + environment_score;
+const string Plan::toString() const {
+    return "Plan ID: " << plan_id << settlement << *selectionPolicy << "Status: " << status << "Score: " << life_quality_score << " " << economy_score << " " << environment_score;
 }
 
+const int Plan::getPlanID() const {
+    return plan_id;
+}
 
-
-//Now, lets move to all the setters 
+SelectionPolicy* Plan::createSelectionPolicy(const string& _selectionPolicy) const {
+    if (_selectionPolicy == "nve") {return new NaiveSelection::NaiveSelection();}
+    else if (_selectionPolicy == "bal") {return new BalancedSelection::BalancedSelection(life_quality_score, economy_score, environment_score);}
+    else if (_selectionPolicy == "eco") {return new EconomyScore::EconomyScore();}
+    else {return new SustainabilitySelection::SustainabilitySelection(;)}
+}
