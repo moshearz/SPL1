@@ -26,6 +26,7 @@ class Simulation {
         void open();
 
         bool isPlanExists(const int& planId) const;
+        void printActionsLog() const;
 
     private:
         bool isRunning;

@@ -205,3 +205,8 @@ bool Simulation::isPlanExists(Const int& planId) const {
     }
     return false;
 }
+
+void Simulation::printActionsLog() const{
+    for (BaseAction* actionLine : actionsLog) {
+        cout << actionLine -> toString() << "\n";}
+}
