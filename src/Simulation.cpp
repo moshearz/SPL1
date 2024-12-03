@@ -38,15 +38,13 @@ Simulation::Simulation(const string &configFilePath) : isRunning(false), planCou
             int category, price, life_quality_score, economy_score, environment_score;
             streamm >> name >> category >> price >> life_quality_score >> economy_score >> environment_score;
 
-            AddFacility::AddFacility(name, static_cast<FacilityCategory>(category), price, life_quality_score, economy_score, environment_score);
+            AddFacility(name, static_cast<FacilityCategory>(category), price, life_quality_score, economy_score, environment_score).act(*this);
         }
         else if (req_data == "plan"){
             string nameOfsettlement, nameOfselectionPoliy;
-            streamm >> name >> selectionPolicy;
-            
-            SelectionPolicy* spForPlanCfile = Plan::createSelectionPolicy(selectionPolicy);
+            streamm >> nameOfsettlement >> nameOfselectionPoliy;
 
-            AddPlan(nameOfPlanm, selectionPolicyForPlan).act(*this);
+            AddPlan(nameOfsettlement, nameOfselectionPoliy).act(*this);
             //maybe we need toclean up dynamically allocated memory ---> delete selectionPolicy ??????? Rule of 5 ????? 
         }            
     }
