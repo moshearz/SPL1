@@ -151,10 +151,11 @@ void Simulation::open(){
             AddPlan(settlement_name, selection_policy).act(*this);
         }
         else if (command == "settlement"){
-            std::string settlement_name, settlement_type;
+            std::string settlement_name;
+            int settlement_type;
             inputStreamm >> settlement_name >> settlement_type;
 
-            AddSettlement(settlement_name, settlement_type).act(*this);
+            AddSettlement(settlement_name, static_cast<SettlementType>(settlement_type)).act(*this);
         }
         else if (command == "facility"){
 
@@ -165,7 +166,7 @@ void Simulation::open(){
 
             FacilityCategory category_enum = static_cast<FacilityCategory>(category);
          
-            AddFacility(facility_name, category_enum, price, lifeq_impact,eco_impact,eco_impact, env_impact).act(*this);
+            AddFacility(facility_name, category_enum, price, lifeq_impact,eco_impact, env_impact).act(*this);
 
         }
         else if (command == "planStatus"){
@@ -196,7 +197,7 @@ void Simulation::open(){
 }
 
 bool Simulation::isPlanExists(const int& planId) const {
-    vector<Plan>::iterator p_itr;
+    vector<Plan>::const_iterator p_itr;
     for (p_itr = plans.begin(); p_itr != plans.end(); p_itr++) {
         if (p_itr->getPlanID() == planId) 
             return true;
@@ -209,7 +210,7 @@ void Simulation::printActionsLog() const{
         cout << actionLine -> toString() << "\n";}
 }
 
-SelectionPolicy* createSelectionPolicy(const string& _selectionPolicy, int _life_quality_score, int _economy_score, int _enviroment_score) const {
+SelectionPolicy* Simulation::createSelectionPolicy(const string& _selectionPolicy, int _life_quality_score, int _economy_score, int _enviroment_score) const {
     if (_selectionPolicy == "nve") {return new NaiveSelection();}
     else if (_selectionPolicy == "bal") {return new BalancedSelection(_life_quality_score, _economy_score, _enviroment_score);}
     else if (_selectionPolicy == "eco") {return new EconomySelection();}
