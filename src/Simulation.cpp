@@ -165,7 +165,7 @@ void Simulation::open(){
 
             FacilityCategory category_enum = static_cast<FacilityCategory>(category);
          
-            AddFacility(facility_name, category_enum, price, lifeq_impact,eco_impact,eco_impact, env_impact).act(*this);
+            AddFacility(facility_name, category_enum, price, lifeq_impact,eco_impact, env_impact).act(*this);
 
         }
         else if (command == "planStatus"){

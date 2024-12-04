@@ -90,5 +90,5 @@
     },
     "terminal.integrated.inheritEnv": false,
     "makefile.configureOnOpen": true,
-    "C_Cpp.errorSquiggles": "disabled",
+    "C_Cpp.errorSquiggles": "enabled",
 }
