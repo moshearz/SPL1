@@ -20,7 +20,8 @@ const vector<Facility*>& Plan::getFacilities() const {return facilities;}
 
 //=============================================SETTERS====================================================
 void Plan::setSelectionPolicy(SelectionPolicy* _selectionPolicy) {
-    *selectionPolicy = *_selectionPolicy; //maybe add a copy/move assignment operator
+    delete selectionPolicy;
+    selectionPolicy = _selectionPolicy -> clone();
 }
 
 

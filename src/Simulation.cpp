@@ -78,7 +78,8 @@ bool Simulation::addFacility(FacilityType Facility) {
     for (ft_itr = facilitiesOptions.begin(); ft_itr != facilitiesOptions.end(); ft_itr++) {
         if (ft_itr->getName() == Facility.getName()) return false;
     }
-    facilitiesOptions.push_back(Facility);
+    facilitiesOptions.emplace_back(FacilityType(Facility.getName(), Facility.getCategory(), Facility.getCost(), 
+    Facility.getLifeQualityScore(), Facility.getEconomyScore(), Facility.getEnvironmentScore()));
     return true;
 }
 

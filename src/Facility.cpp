@@ -31,13 +31,16 @@ FacilityCategory FacilityType::getCategory() const {
     return category;
 }
 
+
+
 Facility::Facility(const string& _name, const string& _settlementName, const FacilityCategory _category, const int _price,
     const int _lifeQuality_score, const int _economy_score, const int _environment_score)
     :FacilityType(_name, _category, _price, _lifeQuality_score, _economy_score, _environment_score),
     status(FacilityStatus::UNDER_CONSTRUCTIONS), timeLeft(_price) {}
 
 Facility::Facility(const FacilityType& _type, const string& _settlementName) : settlementName(_settlementName), 
-    status(FacilityStatus::UNDER_CONSTRUCTIONS), FacilityType(_type) {}
+    status(FacilityStatus::UNDER_CONSTRUCTIONS), FacilityType(_type.getName(), _type.getCategory(), _type.getCost(), 
+    _type.getLifeQualityScore(), _type.getEconomyScore(), _type.getEnvironmentScore()) {}
 
 const string& Facility::getSettlementName() const {
     return settlementName;
