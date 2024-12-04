@@ -209,7 +209,7 @@ void Simulation::printActionsLog() const{
         cout << actionLine -> toString() << "\n";}
 }
 
-SelectionPolicy* createSelectionPolicy(const string& _selectionPolicy, int _life_quality_score, int _economy_score, int _enviroment_score) const {
+SelectionPolicy* Simulation::createSelectionPolicy(const string& _selectionPolicy, int _life_quality_score, int _economy_score, int _enviroment_score) const {
     if (_selectionPolicy == "nve") {return new NaiveSelection();}
     else if (_selectionPolicy == "bal") {return new BalancedSelection(_life_quality_score, _economy_score, _enviroment_score);}
     else if (_selectionPolicy == "eco") {return new EconomySelection();}
