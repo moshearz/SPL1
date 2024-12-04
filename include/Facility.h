@@ -25,6 +25,11 @@ class FacilityType {
         int getEnvironmentScore() const;
         int getEconomyScore() const;
         FacilityCategory getCategory() const;
+
+        FacilityType(const FacilityType &other);
+        FacilityType(FacilityType &&other) noexcept;
+        ~FacilityType();
+        FacilityType *clone() const;
         
 
     protected:

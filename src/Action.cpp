@@ -114,11 +114,9 @@ AddFacility::AddFacility(const string& _facilityName, const FacilityCategory _fa
             : facilityName(_facilityName), facilityCategory(_facilityCategory), price(_price), lifeQualityScore(_lifeQualityScore), economyScore(_economyScore), environmentScore(_environmentScore) {}
 
 void AddFacility::act(Simulation &simulation) {
-    if (simulation.addFacility(FacilityType(facilityName, facilityCategory, price, lifeQualityScore, economyScore, environmentScore))) {
-        complete();
-    } else {
-        error("Facility already exists");
-    }
+    FacilityType temp_f(facilityName, facilityCategory, price, lifeQualityScore, economyScore, environmentScore);
+    if (simulation.addFacility(std::move(temp_f))) {complete();} 
+    else {error("Facility already exists");}
 }
 
 AddFacility* AddFacility::clone() const {

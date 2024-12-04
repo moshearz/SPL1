@@ -31,6 +31,27 @@ FacilityCategory FacilityType::getCategory() const {
     return category;
 }
 
+FacilityType::FacilityType(const FacilityType& other)
+    : name(other.name), category(other.category), price(other.price),
+      lifeQuality_score(other.lifeQuality_score), economy_score(other.economy_score),
+      environment_score(other.environment_score) {}
+
+FacilityType::FacilityType(FacilityType&& other) noexcept
+    : name(std::move(other.name)), category(other.category), price(other.price),
+      lifeQuality_score(other.lifeQuality_score), economy_score(other.economy_score),
+      environment_score(other.environment_score) {}
+
+
+FacilityType* FacilityType::clone() const {
+    return new FacilityType(name, category, price, lifeQuality_score, economy_score, environment_score);
+}
+
+
+
+
+
+
+
 
 
 Facility::Facility(const string& _name, const string& _settlementName, const FacilityCategory _category, const int _price,

@@ -74,12 +74,10 @@ bool Simulation::addSettlement(Settlement *settlement) {
 }
 
 bool Simulation::addFacility(FacilityType Facility) {
-    vector<FacilityType>::iterator ft_itr;
-    for (ft_itr = facilitiesOptions.begin(); ft_itr != facilitiesOptions.end(); ft_itr++) {
-        if (ft_itr->getName() == Facility.getName()) return false;
+    for (FacilityType ft : facilitiesOptions) {
+        if (ft.getName() == Facility.getName()) {return false;}
     }
-    facilitiesOptions.emplace_back(FacilityType(Facility.getName(), Facility.getCategory(), Facility.getCost(), 
-    Facility.getLifeQualityScore(), Facility.getEconomyScore(), Facility.getEnvironmentScore()));
+    facilitiesOptions.emplace_back(std::move(Facility));
     return true;
 }
 

@@ -9,7 +9,7 @@ NaiveSelection::NaiveSelection() : lastSelectedIndex(-1) {}
 
 const FacilityType& NaiveSelection::selectFacility(const vector<FacilityType>& facilitiesOptions) {
     lastSelectedIndex = (++lastSelectedIndex) % facilitiesOptions.size();
-    return facilitiesOptions[lastSelectedIndex];
+    return std::move(facilitiesOptions[lastSelectedIndex]);
     //add empty facilitiesOptions verctor case
 }
 
@@ -41,7 +41,7 @@ const FacilityType& BalancedSelection::selectFacility(const vector<FacilityType>
             distance = result;
         }
     }
-    return *selected;
+    return std::move(*selected);
 }
 
 const string BalancedSelection::toString() const {
@@ -65,14 +65,14 @@ const FacilityType& EconomySelection::selectFacility(const vector<FacilityType>&
     for (vector<FacilityType>::const_iterator f_itr = start; f_itr != facilitiesOptions.end(); f_itr++) {
         if (f_itr -> getCategory() == FacilityCategory::ECONOMY) {
             lastSelectedIndex = std::distance(start, f_itr);
-            return *f_itr;
+            return std::move(*f_itr);
         }
     }
     // if there were no more economy type facilities left until the end of the vector it wraps back to the beginning of the vector to look for the next one
     for (start = facilitiesOptions.begin(); start != facilitiesOptions.end(); start++) {
         if (start -> getCategory() == FacilityCategory::ECONOMY) {
             lastSelectedIndex = std::distance(facilitiesOptions.begin(), start);
-            return *start;
+            return std::move(*start);
         }
     }
 }

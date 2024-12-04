@@ -5,7 +5,7 @@
 
 //===============================================constructor==============================================
 Plan::Plan(const int _planId, const Settlement& _settlement, SelectionPolicy* _selectionPolicy, const vector<FacilityType>& _facilityOptions) : life_quality_score(0), economy_score(0),
-        environment_score(0), plan_id(_planId), settlement(_settlement), selectionPolicy(_selectionPolicy), status(PlanStatus::AVALIABLE), facilityOptions(_facilityOptions) {}
+        environment_score(0), plan_id(_planId), settlement(_settlement), selectionPolicy(_selectionPolicy), status(PlanStatus::AVALIABLE), facilityOptions(std::move(_facilityOptions)) {}
 
 //===========================================GETTERS================================================================
 const int Plan::getlifeQualityScore() const { return life_quality_score;}
@@ -74,8 +74,9 @@ void Plan::printStatus() {
 
 
 void Plan::addFacility(Facility* facility) {
-    if (facility->getStatus() == FacilityStatus::UNDER_CONSTRUCTIONS) {underConstruction.push_back(facility);}
-    else {facilities.push_back(facility);}
+    if (facility->getStatus() == FacilityStatus::UNDER_CONSTRUCTIONS) {
+        underConstruction.emplace_back(facility);
+    } else {facilities.emplace_back(facility);}
 }
 
 const string Plan::toString() const {
@@ -97,9 +98,10 @@ void Plan::printFinalStatus() const {
     for (Facility* uc_fa : underConstruction) {delete uc_fa;}
 }
 
-Plan& operator=(const Plan& other) {
-    if (this != &other) {
-        
-    }
-    return *this;
-}
+// Plan& Plan::operator=(const Plan& other) {
+//     if (this != &other) {
+//         plan_id = other.getPlanID();
+//         selectionPolicy = other.get
+//     }
+//     return *this;
+// }
