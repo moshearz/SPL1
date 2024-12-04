@@ -151,10 +151,11 @@ void Simulation::open(){
             AddPlan(settlement_name, selection_policy).act(*this);
         }
         else if (command == "settlement"){
-            std::string settlement_name, settlement_type;
+            std::string settlement_name;
+            int settlement_type;
             inputStreamm >> settlement_name >> settlement_type;
 
-            AddSettlement(settlement_name, settlement_type).act(*this);
+            AddSettlement(settlement_name, static_cast<SettlementType>(settlement_type)).act(*this);
         }
         else if (command == "facility"){
 
@@ -196,7 +197,7 @@ void Simulation::open(){
 }
 
 bool Simulation::isPlanExists(const int& planId) const {
-    vector<Plan>::iterator p_itr;
+    vector<Plan>::const_iterator p_itr;
     for (p_itr = plans.begin(); p_itr != plans.end(); p_itr++) {
         if (p_itr->getPlanID() == planId) 
             return true;
