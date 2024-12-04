@@ -29,6 +29,12 @@ class Simulation {
         void printActionsLog() const;
         SelectionPolicy* createSelectionPolicy(const string& _selectionPolicy, int _life_quality_score, int _economy_score, int _enviroment_score) const;
 
+        ~Simulation(); //Required to clean up std::vector<Action*> (deep deletion).
+        Simulation(const Simulation& other); //Required for deep copying actionsLog (using Action*'s clone method).
+        Simulation(SimulateStep&& other); //Required to transfer ownership of all members.
+        Simulation& operator=(const Simulation& other); //Required to clean up existing resources and deep copy from the source.
+        Simulation& operator=(Simulation&& other); //Required to clean up existing resources and transfer ownership.
+
     private:
         bool isRunning;
         int planCounter; //For assigning unique plan IDs

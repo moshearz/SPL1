@@ -9,7 +9,7 @@ NaiveSelection::NaiveSelection() : lastSelectedIndex(-1) {}
 
 const FacilityType& NaiveSelection::selectFacility(const vector<FacilityType>& facilitiesOptions) {
     lastSelectedIndex = (++lastSelectedIndex) % facilitiesOptions.size();
-    return std::move(facilitiesOptions[lastSelectedIndex]);
+    return facilitiesOptions[lastSelectedIndex];
     //add empty facilitiesOptions verctor case
 }
 
@@ -98,14 +98,14 @@ const FacilityType& SustainabilitySelection::selectFacility(const vector<Facilit
     for (vector<FacilityType>::const_iterator f_itr = start; f_itr != facilitiesOptions.end(); f_itr++) {
         if (f_itr -> getCategory() == FacilityCategory::ENVIRONMENT) {
             lastSelectedIndex = std::distance(start, f_itr);
-            return *f_itr;
+            return std::move(*f_itr);
         }
     }
     // if there were no more enviroment type facilities left until the end of the vector it wraps back to the beginning of the vector to look for the next one
     for (start = facilitiesOptions.begin(); start != facilitiesOptions.end(); start++) {
         if (start -> getCategory() == FacilityCategory::ENVIRONMENT) {
             lastSelectedIndex = std::distance(facilitiesOptions.begin(), start);
-            return *start;
+            return std::move(*start);
         }
     }
 }

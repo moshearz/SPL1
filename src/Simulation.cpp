@@ -126,7 +126,6 @@ void Simulation::close() {
 
 void Simulation::open(){
     while(isRunning){
-        std::cout << "Please enter an action to execute" << std::endl;
 
         std::string actionLine;
         std::getline(std::cin, actionLine);
@@ -214,4 +213,20 @@ SelectionPolicy* Simulation::createSelectionPolicy(const string& _selectionPolic
     else if (_selectionPolicy == "bal") {return new BalancedSelection(_life_quality_score, _economy_score, _enviroment_score);}
     else if (_selectionPolicy == "eco") {return new EconomySelection();}
     else {return new SustainabilitySelection();}
+}
+
+Simulation::~Simulation() {}
+
+Simulation::Simulation(const Simulation& other) : isRunning(other.isRunning),
+planCounter(other.planCounter) {
+    for (BaseAction* Act : other.actionsLog) {
+        actionsLog.push_back(Act -> clone());
+    }
+    for (Plan p : other.plans) {
+        plans.push_back(Plan(p));
+    }
+    for (Settlement* s : other.settlements) {
+        settlements.push_back(&Settlement(*s));
+    }
+    
 }

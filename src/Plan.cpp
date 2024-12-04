@@ -4,8 +4,9 @@
 #include <iostream>
 
 //===============================================constructor==============================================
-Plan::Plan(const int _planId, const Settlement& _settlement, SelectionPolicy* _selectionPolicy, const vector<FacilityType>& _facilityOptions) : life_quality_score(0), economy_score(0),
-        environment_score(0), plan_id(_planId), settlement(_settlement), selectionPolicy(_selectionPolicy), status(PlanStatus::AVALIABLE), facilityOptions(std::move(_facilityOptions)) {}
+Plan::Plan(const int _planId, const Settlement& _settlement, SelectionPolicy* _selectionPolicy, const vector<FacilityType>& _facilityOptions) : plan_id(_planId), settlement(_settlement),
+selectionPolicy(_selectionPolicy), status(PlanStatus::AVALIABLE), facilities(), underConstruction(),
+facilityOptions(std::move(_facilityOptions)), life_quality_score(0), economy_score(0), environment_score(0) {}
 
 //===========================================GETTERS================================================================
 const int Plan::getlifeQualityScore() const { return life_quality_score;}
@@ -68,7 +69,7 @@ void Plan::printStatus() {
             oss << "\nFacilityName: " << fa -> getName()
             << "\nFacilityStatus: " << "UNDER CONSTRUCTION";
         }
-    std::cout << oss.str();
+    std::cout << oss.str() << "\n";
 }
 
 
@@ -98,10 +99,34 @@ void Plan::printFinalStatus() const {
     for (Facility* uc_fa : underConstruction) {delete uc_fa;}
 }
 
-// Plan& Plan::operator=(const Plan& other) {
-//     if (this != &other) {
-//         plan_id = other.getPlanID();
-//         selectionPolicy = other.get
-//     }
-//     return *this;
-// }
+Plan::~Plan() {
+    delete selectionPolicy;
+    for (Facility* fp : facilities) {
+        delete fp;
+    }
+    for (Facility* fp : underConstruction) {
+        delete fp;
+    }
+}
+
+Plan::Plan(const Plan& other) : plan_id(other.plan_id), settlement(other.settlement),
+    status(other.status), facilityOptions(other.facilityOptions), life_quality_score(other.life_quality_score),
+    economy_score(other.economy_score), environment_score(other.environment_score) {
+    selectionPolicy = other.selectionPolicy->clone();
+    for (Facility* fp : other.facilities) {
+        facilities.push_back(new Facility(*fp));
+    }
+    for (Facility* fp : other.underConstruction) {
+        underConstruction.push_back(new Facility(*fp));
+    }
+}
+
+Plan::Plan(Plan&& other) : plan_id(other.plan_id), settlement(other.settlement), selectionPolicy(other.selectionPolicy),
+    status(other.status), facilityOptions(other.facilityOptions), life_quality_score(other.life_quality_score),
+    economy_score(other.economy_score), environment_score(other.environment_score) {
+    other.selectionPolicy = nullptr;
+    facilities = std::move(other.facilities);
+    other.facilities.clear();
+    underConstruction = std::move(other.underConstruction);
+    other.underConstruction.clear();
+}

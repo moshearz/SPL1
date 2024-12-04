@@ -20,6 +20,11 @@ class NaiveSelection: public SelectionPolicy {
         NaiveSelection *clone() const override;
         ~NaiveSelection() override = default;
 
+        NaiveSelection(const NaiveSelection&) = default;
+        NaiveSelection& operator=(const NaiveSelection&) = default;
+        NaiveSelection(NaiveSelection&&) noexcept = default;
+        NaiveSelection& operator=(NaiveSelection&&) noexcept = default;
+
     private:
         int lastSelectedIndex;
 };
@@ -31,6 +36,11 @@ class BalancedSelection: public SelectionPolicy {
         const string toString() const override;
         BalancedSelection *clone() const override;
         ~BalancedSelection() override = default;
+
+        BalancedSelection(const BalancedSelection&) = default;
+        BalancedSelection& operator=(const BalancedSelection&) = default;
+        BalancedSelection(BalancedSelection&&) noexcept = default;
+        BalancedSelection& operator=(BalancedSelection&&) noexcept = default;
 
     private:
         int LifeQualityScore;
@@ -46,6 +56,11 @@ class EconomySelection: public SelectionPolicy {
         EconomySelection *clone() const override;
         ~EconomySelection() override = default;
 
+        EconomySelection(const EconomySelection&) = default;
+        EconomySelection& operator=(const EconomySelection&) = default;
+        EconomySelection(EconomySelection&&) noexcept = default;
+        EconomySelection& operator=(EconomySelection&&) noexcept = default;
+
     private:
         int lastSelectedIndex;
 
@@ -58,6 +73,11 @@ class SustainabilitySelection: public SelectionPolicy {
         const string toString() const override;
         SustainabilitySelection *clone() const override;
         ~SustainabilitySelection() override = default;
+
+        SustainabilitySelection(const SustainabilitySelection&) = default;
+        SustainabilitySelection& operator=(const SustainabilitySelection&) = default;
+        SustainabilitySelection(SustainabilitySelection&&) noexcept = default;
+        SustainabilitySelection& operator=(SustainabilitySelection&&) noexcept = default;
         
     private:
         int lastSelectedIndex;

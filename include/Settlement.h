@@ -19,7 +19,11 @@ class Settlement {
         SettlementType getType() const;
         const string toString() const;
 
-
+        ~Settlement() = default;
+        Settlement(const Settlement& other) = default;
+        Settlement(Settlement&& other) = default; //but not needed
+        Settlement& operator=(const Settlement& other) = delete;
+        Settlement& operator=(Settlement&& other) = delete;
         
 
     private:

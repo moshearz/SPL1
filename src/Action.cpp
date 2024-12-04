@@ -5,6 +5,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Empty Constructor 
+BaseAction::BaseAction() : status(ActionStatus::COMPLETED) {}
 
 ActionStatus BaseAction::getStatus() const {
     return status;
@@ -104,6 +105,7 @@ const string AddSettlement::toString() const {
     oss << "settlement " << settlementName
     << (settlementType == SettlementType::VILLAGE ? " 0" : (settlementType == SettlementType::CITY ? " 1" : " 2"))
     << (this -> getStatus() == ActionStatus::COMPLETED ? " COMPLETED" : " ERROR");
+    return oss.str();
 }
 
 
@@ -263,7 +265,7 @@ RestoreSimulation::RestoreSimulation() {}
 void RestoreSimulation::act(Simulation &simulation) {
     if (backup == nullptr) {error("No backup available");}
     else {
-        simulation = *backup;
+        //simulation = *backup;
         complete();
     }
 }

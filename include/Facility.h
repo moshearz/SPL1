@@ -26,11 +26,12 @@ class FacilityType {
         int getEconomyScore() const;
         FacilityCategory getCategory() const;
 
-        FacilityType(const FacilityType &other);
-        FacilityType(FacilityType &&other) noexcept;
-        ~FacilityType();
         FacilityType *clone() const;
-        
+        ~FacilityType() = default;
+        FacilityType(const FacilityType &other) = default;
+        FacilityType(FacilityType &&other) = default;
+        FacilityType& operator=(const FacilityType& other) = delete;
+        FacilityType& operator=(FacilityType&& other) = delete;
 
     protected:
         const string name;
@@ -54,6 +55,12 @@ class Facility: public FacilityType {
         void setStatus(FacilityStatus status);
         const FacilityStatus& getStatus() const;
         const string toString() const;
+
+        ~Facility() = default;
+        Facility(const Facility &other) = default;
+        Facility(Facility &&other) = default;
+        Facility& operator=(const Facility& other) = delete;
+        Facility& operator=(Facility&& other) = delete;
 
     private:
         const string settlementName;
