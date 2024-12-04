@@ -18,8 +18,6 @@ class BaseAction{
         virtual BaseAction* clone() const = 0;
         virtual ~BaseAction() = default;
 
-        virtual BaseAction& operator=(const BaseAction& other); //Optional if Action objects are copied, requiring a clone method for polymorphic copying.
-
     protected:
         void complete();
         void error(string errorMsg);
@@ -38,8 +36,6 @@ class SimulateStep : public BaseAction {
         const string toString() const override;
         SimulateStep *clone() const override;
 
-        SimulateStep& operator=(const SimulateStep& other);
-
     private:
         const int numOfSteps;
 };
@@ -50,8 +46,6 @@ class AddPlan : public BaseAction {
         void act(Simulation &simulation) override;
         const string toString() const override;
         AddPlan *clone() const override;
-
-        AddPlan& operator=(const AddPlan& other);
 
     private:
         const string settlementName;
@@ -66,8 +60,6 @@ class AddSettlement : public BaseAction {
         AddSettlement *clone() const override;
         const string toString() const override;
 
-        AddSettlement& operator=(const AddSettlement& other);
-
     private:
         const string settlementName;
         const SettlementType settlementType;
@@ -81,8 +73,6 @@ class AddFacility : public BaseAction {
         void act(Simulation &simulation) override;
         AddFacility *clone() const override;
         const string toString() const override;
-
-        AddFacility& operator=(const AddFacility& other);
 
     private:
         const string facilityName;
@@ -101,8 +91,6 @@ class PrintPlanStatus: public BaseAction {
         PrintPlanStatus *clone() const override;
         const string toString() const override;
 
-        PrintPlanStatus& operator=(const PrintPlanStatus& other);
-
     private:
         const int planId;
 };
@@ -114,8 +102,6 @@ class ChangePlanPolicy : public BaseAction {
         void act(Simulation &simulation) override;
         ChangePlanPolicy *clone() const override;
         const string toString() const override;
-
-        ChangePlanPolicy& operator=(const ChangePlanPolicy& other);
 
     private:
         const int planId;
@@ -130,8 +116,6 @@ class PrintActionsLog : public BaseAction {
         PrintActionsLog *clone() const override;
         const string toString() const override;
 
-        PrintActionsLog& operator=(const PrintActionsLog& other);
-
     private:
 };
 
@@ -141,8 +125,6 @@ class Close : public BaseAction {
         void act(Simulation &simulation) override;
         Close *clone() const override;
         const string toString() const override;
-
-        Close& operator=(const Close& other);
 
     private:
 };
@@ -154,8 +136,6 @@ class BackupSimulation : public BaseAction {
         BackupSimulation *clone() const override;
         const string toString() const override;
 
-        BackupSimulation& operator=(const BackupSimulation& other);
-
     private:
 };
 
@@ -166,8 +146,6 @@ class RestoreSimulation : public BaseAction {
         void act(Simulation &simulation) override;
         RestoreSimulation *clone() const override;
         const string toString() const override;
-
-        RestoreSimulation& operator=(const RestoreSimulation& other);
 
     private:
 };

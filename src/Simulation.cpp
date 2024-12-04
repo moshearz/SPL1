@@ -112,16 +112,10 @@ void Simulation::step() {
 void Simulation::close() {
     isRunning = false;
 
-    for (vector<Plan>::iterator p_itr = plans.begin(); p_itr != plans.end(); p_itr++) {
-        p_itr -> printFinalStatus();}
-    
-    for (vector<BaseAction*>::iterator ac_itr = actionsLog.begin(); ac_itr != actionsLog.end(); ac_itr++) {
-        delete *ac_itr;}
-    
-    for (vector<Settlement*>::iterator s_itr = settlements.begin(); s_itr != settlements.end(); s_itr++) {
-        delete *s_itr;}
-
-    std::cout << "Simulation has been closed. Please come back :)" << std::endl;
+    for (const Plan& p : plans) {
+        p.toString();
+    }
+    std::cout << "\nSimulation has been closed. Please come back :)" << std::endl;
 }
 
 void Simulation::open(){
@@ -215,18 +209,26 @@ SelectionPolicy* Simulation::createSelectionPolicy(const string& _selectionPolic
     else {return new SustainabilitySelection();}
 }
 
-Simulation::~Simulation() {}
+Simulation::~Simulation() {
+    for (BaseAction* Act : actionsLog) {
+        delete Act;
+    }
+    for (Settlement* s : settlements) {
+        delete s;
+    }
+}
 
-Simulation::Simulation(const Simulation& other) : isRunning(other.isRunning),
-planCounter(other.planCounter) {
+Simulation::Simulation(const Simulation& other) : isRunning(other.isRunning), planCounter(other.planCounter) {
     for (BaseAction* Act : other.actionsLog) {
         actionsLog.push_back(Act -> clone());
     }
-    for (Plan p : other.plans) {
+    for (const Plan& p : other.plans) {
         plans.push_back(Plan(p));
     }
     for (Settlement* s : other.settlements) {
-        settlements.push_back(&Settlement(*s));
+        settlements.push_back(new Settlement(*s));
     }
-    
+    for (const FacilityType& ft : other.facilitiesOptions) {
+        facilitiesOptions.push_back(FacilityType(ft));
+    }
 }

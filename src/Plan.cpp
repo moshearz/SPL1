@@ -78,13 +78,12 @@ void Plan::addFacility(Facility* facility) {
     if (facility->getStatus() == FacilityStatus::UNDER_CONSTRUCTIONS) {
         underConstruction.emplace_back(facility);
     } else {facilities.emplace_back(facility);}
+    life_quality_score += facility->getLifeQualityScore();
+    economy_score += facility->getEconomyScore();
+    environment_score += facility->getEnvironmentScore();
 }
 
 const string Plan::toString() const {
-    return "Plan ID: " + plan_id;
-}
-
-void Plan::printFinalStatus() const {
     std::ostringstream oss;
     oss << "PlanID: " << plan_id 
         << "\nSettlementName: " << settlement.getName()
@@ -92,12 +91,9 @@ void Plan::printFinalStatus() const {
         << "\nLifeQualityScore: " << life_quality_score
         << "\nEconomyScore: " << economy_score
         << "\nEnviromentScore: " << environment_score;
-    std::cout << oss.str();
-
-    delete selectionPolicy;
-    for (Facility* fa : facilities) {delete fa;}
-    for (Facility* uc_fa : underConstruction) {delete uc_fa;}
+    return oss.str();
 }
+
 
 Plan::~Plan() {
     delete selectionPolicy;

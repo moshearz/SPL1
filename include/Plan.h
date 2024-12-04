@@ -24,7 +24,6 @@ class Plan {
         const string toString() const;
 
         const int getPlanID() const;
-        void printFinalStatus() const;
 
         ~Plan(); //Required to clean up SelectionPolicy* and the std::vector<Facility*> elements.
         Plan(const Plan& other); //Required to deep copy SelectionPolicy* (via a clone method) and deep copy facilities and underConstruction vectors

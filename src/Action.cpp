@@ -5,7 +5,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Empty Constructor 
-BaseAction::BaseAction() : status(ActionStatus::COMPLETED) {}
+BaseAction::BaseAction() : status(ActionStatus::COMPLETED), errorMsg("") {}
 
 ActionStatus BaseAction::getStatus() const {
     return status;
@@ -241,8 +241,8 @@ BackupSimulation::BackupSimulation() {}
 extern Simulation* backup;
 
 void BackupSimulation::act(Simulation &simulation) {
-    if (backup == nullptr) {backup = new Simulation(simulation);}
-    else {(*backup) = simulation;}
+    delete backup;
+    backup = new Simulation(simulation);
     complete();
 }
 
@@ -265,7 +265,8 @@ RestoreSimulation::RestoreSimulation() {}
 void RestoreSimulation::act(Simulation &simulation) {
     if (backup == nullptr) {error("No backup available");}
     else {
-        //simulation = *backup;
+        simulation.~Simulation();
+        new (&simulation) Simulation(*backup);
         complete();
     }
 }

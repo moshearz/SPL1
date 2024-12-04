@@ -31,9 +31,9 @@ class Simulation {
 
         ~Simulation(); //Required to clean up std::vector<Action*> (deep deletion).
         Simulation(const Simulation& other); //Required for deep copying actionsLog (using Action*'s clone method).
-        Simulation(SimulateStep&& other); //Required to transfer ownership of all members.
-        Simulation& operator=(const Simulation& other); //Required to clean up existing resources and deep copy from the source.
-        Simulation& operator=(Simulation&& other); //Required to clean up existing resources and transfer ownership.
+        Simulation(Simulation&& other) = delete;
+        Simulation& operator=(const Simulation& other) = delete;
+        Simulation& operator=(Simulation&& other) = delete;
 
     private:
         bool isRunning;

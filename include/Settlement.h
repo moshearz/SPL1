@@ -21,7 +21,7 @@ class Settlement {
 
         ~Settlement() = default;
         Settlement(const Settlement& other) = default;
-        Settlement(Settlement&& other) = default; //but not needed
+        Settlement(Settlement&& other) = delete; //not a perfect move
         Settlement& operator=(const Settlement& other) = delete;
         Settlement& operator=(Settlement&& other) = delete;
         
