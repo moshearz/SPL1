@@ -39,7 +39,8 @@ Simulation::Simulation(const string &configFilePath) : isRunning(false), planCou
             int category, price, life_quality_score, economy_score, environment_score;
             streamm >> name >> category >> price >> life_quality_score >> economy_score >> environment_score;
 
-            facilitiesOptions.emplace_back(name, static_cast<FacilityCategory>(category), price, life_quality_score, economy_score, environment_score);
+            FacilityType curr_ft = FacilityType(name, static_cast<FacilityCategory>(category), price, life_quality_score, economy_score, environment_score);
+            facilitiesOptions.push_back(curr_ft);
         }
         else if (req_data == "plan"){
             string nameOfsettlement, nameOfselectionPoliy;
@@ -77,7 +78,7 @@ bool Simulation::addFacility(FacilityType Facility) {
     for (const FacilityType& ft : facilitiesOptions) {
         if (ft.getName() == Facility.getName()) {return false;}
     }
-    facilitiesOptions.emplace_back(std::move(Facility));
+    facilitiesOptions.push_back(Facility);
     return true;
 }
 

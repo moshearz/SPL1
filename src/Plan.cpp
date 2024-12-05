@@ -32,7 +32,7 @@ void Plan::step() {
      if (status == PlanStatus::AVALIABLE){
         //stage 2
         int constructonLimit = static_cast<int>(settlement.getType()) + 1;
-        while (underConstruction.size() < constructonLimit){
+        while (underConstruction.size() < constructonLimit) {
             addFacility(new Facility(selectionPolicy->selectFacility(facilityOptions), settlement.getName()));
         }
      }

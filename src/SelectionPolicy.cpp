@@ -62,22 +62,10 @@ BalancedSelection* BalancedSelection::clone() const {
 EconomySelection::EconomySelection() : lastSelectedIndex(-1) {}
 
 const FacilityType& EconomySelection::selectFacility(const vector<FacilityType>& facilitiesOptions) {
-    lastSelectedIndex = (++lastSelectedIndex) % facilitiesOptions.size();
-    vector<FacilityType>::const_iterator start = facilitiesOptions.begin() + lastSelectedIndex;
-    // starts the iterator after the last time an economy type facility was chosen to and looks for the next one
-    for (vector<FacilityType>::const_iterator f_itr = start; f_itr != facilitiesOptions.end(); f_itr++) {
-        if (f_itr -> getCategory() == FacilityCategory::ECONOMY) {
-            lastSelectedIndex = std::distance(start, f_itr);
-            return std::move(*f_itr);
-        }
-    }
-    // if there were no more economy type facilities left until the end of the vector it wraps back to the beginning of the vector to look for the next one
-    for (start = facilitiesOptions.begin(); start != facilitiesOptions.end(); start++) {
-        if (start -> getCategory() == FacilityCategory::ECONOMY) {
-            lastSelectedIndex = std::distance(facilitiesOptions.begin(), start);
-            return std::move(*start);
-        }
-    }
+    do {
+        lastSelectedIndex = (lastSelectedIndex + 1) % facilitiesOptions.size();
+    } while (facilitiesOptions[lastSelectedIndex].getCategory() != FacilityCategory::ECONOMY);
+    return facilitiesOptions[lastSelectedIndex];
 }
 
 const string EconomySelection::toString() const {
@@ -95,22 +83,10 @@ EconomySelection* EconomySelection::clone() const {
 SustainabilitySelection::SustainabilitySelection() : lastSelectedIndex(-1) {}
 
 const FacilityType& SustainabilitySelection::selectFacility(const vector<FacilityType>& facilitiesOptions) {
-    lastSelectedIndex = (++lastSelectedIndex) % facilitiesOptions.size();
-    vector<FacilityType>::const_iterator start = facilitiesOptions.begin() + lastSelectedIndex;
-    // starts the iterator after the last time an enviroment type facility was chosen to and looks for the next one
-    for (vector<FacilityType>::const_iterator f_itr = start; f_itr != facilitiesOptions.end(); f_itr++) {
-        if (f_itr -> getCategory() == FacilityCategory::ENVIRONMENT) {
-            lastSelectedIndex = std::distance(start, f_itr);
-            return std::move(*f_itr);
-        }
-    }
-    // if there were no more enviroment type facilities left until the end of the vector it wraps back to the beginning of the vector to look for the next one
-    for (start = facilitiesOptions.begin(); start != facilitiesOptions.end(); start++) {
-        if (start -> getCategory() == FacilityCategory::ENVIRONMENT) {
-            lastSelectedIndex = std::distance(facilitiesOptions.begin(), start);
-            return std::move(*start);
-        }
-    }
+    do {
+        lastSelectedIndex = (lastSelectedIndex + 1) % facilitiesOptions.size();
+    } while (facilitiesOptions[lastSelectedIndex].getCategory() != FacilityCategory::ENVIRONMENT);
+    return facilitiesOptions[lastSelectedIndex];
 }
 
 const string SustainabilitySelection::toString() const {
