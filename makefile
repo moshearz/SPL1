@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -Wall -g -c -Weffc++ -I./include
+CXXFLAGS = -Wall -g -o0 -c -Weffc++ -I./include
 
 SRCS = $(wildcard src/*.cpp)
 

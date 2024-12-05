@@ -238,10 +238,10 @@ SelectionPolicy* Simulation::createSelectionPolicy(const string& _selectionPolic
 
 Simulation::~Simulation() {
     for (BaseAction* Act : actionsLog) {
-        Act -> ~BaseAction();
+        delete Act;
     }
     for (Settlement* s : settlements) {
-        s -> ~Settlement();
+        delete s;
     }
 }
 
