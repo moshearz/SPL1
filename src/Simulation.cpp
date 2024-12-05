@@ -74,7 +74,7 @@ bool Simulation::addSettlement(Settlement *settlement) {
 }
 
 bool Simulation::addFacility(FacilityType Facility) {
-    for (FacilityType ft : facilitiesOptions) {
+    for (const FacilityType& ft : facilitiesOptions) {
         if (ft.getName() == Facility.getName()) {return false;}
     }
     facilitiesOptions.emplace_back(std::move(Facility));
