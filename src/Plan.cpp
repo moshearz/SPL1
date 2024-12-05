@@ -77,10 +77,12 @@ void Plan::printStatus() {
 void Plan::addFacility(Facility* facility) {
     if (facility->getStatus() == FacilityStatus::UNDER_CONSTRUCTIONS) {
         underConstruction.emplace_back(facility);
+    } else {
+        facilities.emplace_back(facility);
         life_quality_score += facility->getLifeQualityScore();
         economy_score += facility->getEconomyScore();
         environment_score += facility->getEnvironmentScore();
-    } else {facilities.emplace_back(facility);}
+    }
 }
 
 const string Plan::toString() const {

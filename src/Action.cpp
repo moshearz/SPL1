@@ -18,7 +18,7 @@ void BaseAction::complete() {
 void BaseAction::error(string _errorMsg) {
     errorMsg = _errorMsg;
     status = ActionStatus::ERROR;
-    std::cout << "Error: " << errorMsg;
+    std::cout << "Error: " << errorMsg << "\n";
 }
 
 const string& BaseAction::getErrorMsg() const {

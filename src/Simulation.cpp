@@ -64,7 +64,7 @@ void Simulation::addPlan(const Settlement &settlement, SelectionPolicy *selectio
 }
 
 void Simulation::addAction(BaseAction *action) {
-    actionsLog.push_back(action);
+    actionsLog.push_back(std::move(action));
 }
 
 bool Simulation::addSettlement(Settlement *settlement) {
@@ -133,26 +133,26 @@ void Simulation::open(){
         if (command == "step"){
             int numOfSteps;
             inputStreamm >> numOfSteps;
-            SimulateStep current_act(numOfSteps);
-            current_act.act(*this);
-            addAction(&current_act);
+            SimulateStep* current_act = new SimulateStep(numOfSteps);
+            current_act -> act(*this);
+            addAction(current_act);
         }
         else if (command == "plan"){
             std::string settlement_name, selection_policy;
             inputStreamm >> settlement_name >> selection_policy;
 
-            AddPlan current_act(settlement_name, selection_policy);
-            current_act.act(*this);
-            addAction(&current_act);
+            AddPlan* current_act = new AddPlan(settlement_name, selection_policy);
+            current_act -> act(*this);
+            addAction(current_act);
         }
         else if (command == "settlement"){
             std::string settlement_name;
             int settlement_type;
             inputStreamm >> settlement_name >> settlement_type;
 
-            AddSettlement current_act(settlement_name, static_cast<SettlementType>(settlement_type));
-            current_act.act(*this);
-            addAction(&current_act);
+            AddSettlement* current_act = new AddSettlement(settlement_name, static_cast<SettlementType>(settlement_type));
+            current_act -> act(*this);
+            addAction(current_act);
         }
         else if (command == "facility"){
 
@@ -163,33 +163,34 @@ void Simulation::open(){
 
             FacilityCategory category_enum = static_cast<FacilityCategory>(category);
          
-            AddFacility current_act(facility_name, category_enum, price, lifeq_impact,eco_impact, env_impact);
-            current_act.act(*this);
-            addAction(&current_act);
+            AddFacility* current_act = new AddFacility(facility_name, category_enum, price, lifeq_impact,eco_impact, env_impact);
+            current_act -> act(*this);
+            addAction(current_act);
 
         }
         else if (command == "planStatus"){
             int plan_id;
             inputStreamm >> plan_id;
 
-            PrintPlanStatus current_act(plan_id);
-            current_act.act(*this);
-            addAction(&current_act);
+            PrintPlanStatus* current_act = new PrintPlanStatus(plan_id);
+            current_act -> act(*this);
+            addAction(current_act);
         }
         else if (command == "changePolicy"){
             int plan_id;
             std::string selection_policy;
             inputStreamm >> plan_id >> selection_policy;
 
-            ChangePlanPolicy current_act(plan_id, selection_policy);
-            current_act.act(*this);
-            addAction(&current_act);
+            ChangePlanPolicy* current_act = new ChangePlanPolicy(plan_id, selection_policy);
+            current_act -> act(*this);
+            addAction(current_act);
         }
         else if (command == "log") {PrintActionsLog().act(*this);}
         
         else if (command == "backup") {
-            BackupSimulation().act(*this);
-            //addAction()
+            BackupSimulation* current_act = new BackupSimulation();
+            current_act -> act(*this);
+            addAction(current_act);
         }
 
         else if(command == "restore") {RestoreSimulation().act(*this);}
@@ -224,10 +225,10 @@ SelectionPolicy* Simulation::createSelectionPolicy(const string& _selectionPolic
 
 Simulation::~Simulation() {
     for (BaseAction* Act : actionsLog) {
-        delete Act;
+        Act -> ~BaseAction();
     }
     for (Settlement* s : settlements) {
-        delete s;
+        s -> ~Settlement();
     }
 }
 
