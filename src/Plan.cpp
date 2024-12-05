@@ -39,7 +39,7 @@ void Plan::step() {
 
      //Stage 3 (Now the PlanStatus is BUSY)
      std::vector<Facility*>::iterator iter;
-     for (iter = underConstruction.begin(); iter != underConstruction.end();) {
+     for (iter = ++underConstruction.begin(); iter != underConstruction.end();) {
         (*iter) -> Facility::step();
         if ((*iter) -> getStatus() == FacilityStatus::OPERATIONAL) {
             addFacility(*iter);
