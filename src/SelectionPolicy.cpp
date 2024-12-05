@@ -8,9 +8,8 @@
 NaiveSelection::NaiveSelection() : lastSelectedIndex(-1) {}
 
 const FacilityType& NaiveSelection::selectFacility(const vector<FacilityType>& facilitiesOptions) {
-    lastSelectedIndex = (++lastSelectedIndex) % facilitiesOptions.size();
-    return facilitiesOptions[lastSelectedIndex];
-    //add empty facilitiesOptions verctor case
+    lastSelectedIndex++;
+    return facilitiesOptions[lastSelectedIndex % facilitiesOptions.size()];
 }
 
 const string NaiveSelection::toString() const {

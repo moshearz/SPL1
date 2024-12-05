@@ -14,7 +14,8 @@ using namespace std;
 // VERIFY RULE OF 5 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 // ===============================================CONSTRUCTOR=================================================
-Simulation::Simulation(const string &configFilePath) : isRunning(false), planCounter(0) {
+Simulation::Simulation(const string &configFilePath) : isRunning(false), planCounter(0),
+actionsLog(), plans(), settlements(), facilitiesOptions() {
     std::ifstream configFile(configFilePath);
 
     string line;
@@ -94,6 +95,10 @@ bool Simulation::isSettlementExists(const string &settlementName) {
 Settlement& Simulation::getSettlement(const string &settlementName) {
     for (Settlement* settlement : settlements){
         if (settlement->getName() == settlementName) return *settlement;}
+    
+    // Should never reach here since this function gets called only if isSettlementExists passes or
+    // its being called in the simulation constructor which is guaranteed to pass
+    std::terminate(); // Used to supress the flag warnings 
 }
 
 Plan& Simulation::getPlan(const int planID){
@@ -102,6 +107,9 @@ Plan& Simulation::getPlan(const int planID){
         if(iter->getPlanID() == planID)
             return *iter;
     }
+
+    // Should never reach here since this function gets called only if isPlanExists passes
+    std::terminate(); // Used to supress the flag warnings 
 }
 
 void Simulation::step() {
@@ -194,7 +202,11 @@ void Simulation::open(){
             addAction(current_act);
         }
 
-        else if(command == "restore") {RestoreSimulation().act(*this);}
+        else if(command == "restore") {
+            RestoreSimulation* current_act = new RestoreSimulation();
+            current_act -> act(*this);
+            addAction(current_act);
+        }
 
         else if (command == "close") {close();}
 
@@ -233,7 +245,8 @@ Simulation::~Simulation() {
     }
 }
 
-Simulation::Simulation(const Simulation& other) : isRunning(other.isRunning), planCounter(other.planCounter) {
+Simulation::Simulation(const Simulation& other) : isRunning(other.isRunning), planCounter(other.planCounter),
+actionsLog(), plans(), settlements(), facilitiesOptions() {
     for (BaseAction* Act : other.actionsLog) {
         actionsLog.push_back(Act -> clone());
     }

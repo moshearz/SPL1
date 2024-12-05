@@ -4,9 +4,9 @@
 #include <iostream>
 
 //===============================================constructor==============================================
-Plan::Plan(const int _planId, const Settlement& _settlement, SelectionPolicy* _selectionPolicy, const vector<FacilityType>& _facilityOptions) : plan_id(_planId), settlement(_settlement),
-selectionPolicy(_selectionPolicy), status(PlanStatus::AVALIABLE), facilities(), underConstruction(),
-facilityOptions(std::move(_facilityOptions)), life_quality_score(0), economy_score(0), environment_score(0) {}
+Plan::Plan(const int _planId, const Settlement& _settlement, SelectionPolicy* _selectionPolicy, const vector<FacilityType>& _facilityOptions) : 
+plan_id(_planId), settlement(_settlement), selectionPolicy(_selectionPolicy), status(PlanStatus::AVALIABLE), facilities(), underConstruction(),
+facilityOptions(std::move(_facilityOptions)), life_quality_score(0), economy_score(0), environment_score(0), facilityOrder() {}
 
 //===========================================GETTERS================================================================
 const int Plan::getlifeQualityScore() const { return life_quality_score;}
@@ -32,7 +32,7 @@ void Plan::step() {
      if (status == PlanStatus::AVALIABLE){
         //stage 2
         int constructonLimit = static_cast<int>(settlement.getType()) + 1;
-        while (underConstruction.size() < constructonLimit) {
+        while (static_cast<int>(underConstruction.size()) < constructonLimit) {
             addFacility(new Facility(selectionPolicy->selectFacility(facilityOptions), settlement.getName()));
         }
      }
@@ -47,7 +47,7 @@ void Plan::step() {
         } else {iter++;}
      }
      //Stage 4
-     if (underConstruction.size() == static_cast<int>(settlement.getType()) + 1) {
+     if (static_cast<int>(underConstruction.size()) == static_cast<int>(settlement.getType()) + 1) {
         status = PlanStatus::BUSY;}
     else {status = PlanStatus::AVALIABLE;}
 }
@@ -104,10 +104,9 @@ Plan::~Plan() {
     }
 }
 
-Plan::Plan(const Plan& other) : plan_id(other.plan_id), settlement(other.settlement),
-    status(other.status), facilityOptions(other.facilityOptions), life_quality_score(other.life_quality_score),
-    economy_score(other.economy_score), environment_score(other.environment_score) {
-    selectionPolicy = other.selectionPolicy->clone();
+Plan::Plan(const Plan& other) : plan_id(other.plan_id), settlement(other.settlement), selectionPolicy(other.selectionPolicy->clone()),
+    status(other.status), facilities(), underConstruction(), facilityOptions(other.facilityOptions), life_quality_score(other.life_quality_score),
+    economy_score(other.economy_score), environment_score(other.environment_score), facilityOrder() {
     for (Facility* fp : other.facilities) {
         facilities.push_back(new Facility(*fp));
     }
@@ -117,11 +116,9 @@ Plan::Plan(const Plan& other) : plan_id(other.plan_id), settlement(other.settlem
 }
 
 Plan::Plan(Plan&& other) : plan_id(other.plan_id), settlement(other.settlement), selectionPolicy(other.selectionPolicy),
-    status(other.status), facilityOptions(other.facilityOptions), life_quality_score(other.life_quality_score),
-    economy_score(other.economy_score), environment_score(other.environment_score) {
+    status(other.status), facilities(std::move(other.facilities)), underConstruction(std::move(other.underConstruction)), facilityOptions(other.facilityOptions), 
+    life_quality_score(other.life_quality_score), economy_score(other.economy_score), environment_score(other.environment_score), facilityOrder() {
     other.selectionPolicy = nullptr;
-    facilities = std::move(other.facilities);
     other.facilities.clear();
-    underConstruction = std::move(other.underConstruction);
     other.underConstruction.clear();
 }
