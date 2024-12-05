@@ -8,6 +8,7 @@
 #include <sstream>
 #include <iostream>
 #include <algorithm>
+#include <cstdlib>
 
 using namespace std;
 // VERIFY RULE OF 5 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -31,21 +32,20 @@ Simulation::Simulation(const string &configFilePath) : isRunning(false), planCou
             int typeInt;
             streamm >> name >> typeInt;
 
-            AddSettlement(name, static_cast<SettlementType>(typeInt)).act(*this);
+            settlements.push_back(new Settlement(name, static_cast<SettlementType>(typeInt)));
         }
         else if (req_data == "facility"){
             string name;
             int category, price, life_quality_score, economy_score, environment_score;
             streamm >> name >> category >> price >> life_quality_score >> economy_score >> environment_score;
 
-            AddFacility(name, static_cast<FacilityCategory>(category), price, life_quality_score, economy_score, environment_score).act(*this);
+            facilitiesOptions.emplace_back(name, static_cast<FacilityCategory>(category), price, life_quality_score, economy_score, environment_score);
         }
         else if (req_data == "plan"){
             string nameOfsettlement, nameOfselectionPoliy;
             streamm >> nameOfsettlement >> nameOfselectionPoliy;
 
-            AddPlan(nameOfsettlement, nameOfselectionPoliy).act(*this);
-            //maybe we need toclean up dynamically allocated memory ---> delete selectionPolicy ??????? Rule of 5 ????? 
+            plans.emplace_back(planCounter++, getSettlement(nameOfsettlement), createSelectionPolicy(nameOfselectionPoliy, 0, 0, 0), facilitiesOptions);
         }            
     }
 
@@ -55,7 +55,7 @@ Simulation::Simulation(const string &configFilePath) : isRunning(false), planCou
 // ===============================================METHODS IMPLEMANTIONS=================================================
 void Simulation::start(){
     isRunning = true;
-    std::cout << "The simulation has started. " << std::endl;
+    std::cout << "The simulation has started.\n";
     open();
 }
 
@@ -125,8 +125,8 @@ void Simulation::open(){
         std::getline(std::cin, actionLine);
 
         if (actionLine.empty()) {continue;}
-
         std::istringstream inputStreamm(actionLine);
+        std::system("clear");
         std::string command;
         inputStreamm >> command;
 

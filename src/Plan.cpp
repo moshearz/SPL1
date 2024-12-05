@@ -61,22 +61,20 @@ void Plan::printStatus() {
         << "\nLifeQualityScore: " << life_quality_score
         << "\nEconomyScore: " << economy_score
         << "\nEnviromentScore: " << environment_score;
-        for (Facility* fa : facilities) {
+        for (Facility* fa : facilityOrder) {
             oss << "\nFacilityName: " << fa -> getName()
-            << "\nFacilityStatus: " << "OPERATIONAL";
+            << "\nFacilityStatus: " << (fa -> getStatus() == FacilityStatus::OPERATIONAL ? "OPERATIONAL" : "UNDER CONSTRUCTION");
         }
-        for (Facility* fa : underConstruction) {
-            oss << "\nFacilityName: " << fa -> getName()
-            << "\nFacilityStatus: " << "UNDER CONSTRUCTION";
-        }
-    std::cout << oss.str() << "\n";
+    oss << "\n";
+    std::cout << oss.str();
 }
 
 
 
 void Plan::addFacility(Facility* facility) {
     if (facility->getStatus() == FacilityStatus::UNDER_CONSTRUCTIONS) {
-        underConstruction.emplace_back(facility);
+        underConstruction.push_back(facility);
+        facilityOrder.push_back(facility);
     } else {
         facilities.emplace_back(facility);
         life_quality_score += facility->getLifeQualityScore();
@@ -89,7 +87,6 @@ const string Plan::toString() const {
     std::ostringstream oss;
     oss << "PlanID: " << plan_id 
         << "\nSettlementName: " << settlement.getName()
-        << "\nSelectionPolicy: " << selectionPolicy -> toString()
         << "\nLifeQualityScore: " << life_quality_score
         << "\nEconomyScore: " << economy_score
         << "\nEnviromentScore: " << environment_score << "\n";

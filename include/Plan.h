@@ -23,6 +23,7 @@ class Plan {
         void addFacility(Facility* facility); //addFacility removes said facility from underConstruction and moves it to Facilites
         const string toString() const;
 
+
         const int getPlanID() const;
 
         ~Plan(); //Required to clean up SelectionPolicy* and the std::vector<Facility*> elements.
@@ -43,4 +44,6 @@ class Plan {
         vector<Facility*> underConstruction;
         const vector<FacilityType> &facilityOptions;
         int life_quality_score, economy_score, environment_score;
+
+        vector<Facility*> facilityOrder;
 };
