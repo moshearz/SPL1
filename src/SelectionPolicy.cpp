@@ -35,12 +35,15 @@ const FacilityType& BalancedSelection::selectFacility(const vector<FacilityType>
         int life = LifeQualityScore + (itr -> getLifeQualityScore());
         int eco = EconomyScore + (itr -> getEconomyScore());
         int env = EnvironmentScore + (itr -> getEnvironmentScore());
-        int result = std::max(life, std::max(eco, env));
+        int result = std::max(std::abs(life - eco), std::max(std::abs(eco - env), std::abs(life - env)));
         if (result < distance) {
             selected = &(*itr);
             distance = result;
         }
     }
+    LifeQualityScore += selected -> getLifeQualityScore();
+    EconomyScore += selected -> getEconomyScore();
+    EnvironmentScore += selected -> getEnvironmentScore();
     return std::move(*selected);
 }
 

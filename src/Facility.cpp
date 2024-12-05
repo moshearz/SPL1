@@ -45,9 +45,9 @@ Facility::Facility(const string& _name, const string& _settlementName, const Fac
     :FacilityType(_name, _category, _price, _lifeQuality_score, _economy_score, _environment_score),
     settlementName(_settlementName), status(FacilityStatus::UNDER_CONSTRUCTIONS), timeLeft(_price) {}
 
-Facility::Facility(const FacilityType& _type, const string& _settlementName) : settlementName(_settlementName), 
-    status(FacilityStatus::UNDER_CONSTRUCTIONS), FacilityType(_type.getName(), _type.getCategory(), _type.getCost(), 
-    _type.getLifeQualityScore(), _type.getEconomyScore(), _type.getEnvironmentScore()) {}
+Facility::Facility(const FacilityType& _type, const string& _settlementName) : FacilityType(_type.getName(), _type.getCategory(),
+    _type.getCost(), _type.getLifeQualityScore(), _type.getEconomyScore(), _type.getEnvironmentScore()),
+    settlementName(_settlementName), status(FacilityStatus::UNDER_CONSTRUCTIONS), timeLeft(_type.getCost()) {}
 
 const string& Facility::getSettlementName() const {
     return settlementName;
@@ -58,12 +58,8 @@ const int Facility::getTimeLeft() const {
 }
 
 FacilityStatus Facility::step() { 
-    if (timeLeft > 0) {
-        --timeLeft;
-        if (timeLeft == 0) {
-            status = FacilityStatus::OPERATIONAL;
-        }
-    }
+    if (timeLeft > 0) {--timeLeft;}
+    if (timeLeft == 0) {status = FacilityStatus::OPERATIONAL;}
     return status;
 }
 

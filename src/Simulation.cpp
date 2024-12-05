@@ -113,7 +113,7 @@ void Simulation::close() {
     isRunning = false;
 
     for (const Plan& p : plans) {
-        p.toString();
+        std::cout << p.toString();
     }
     std::cout << "\nSimulation has been closed. Please come back :)" << std::endl;
 }
@@ -124,7 +124,7 @@ void Simulation::open(){
         std::string actionLine;
         std::getline(std::cin, actionLine);
 
-        if (actionLine.empty()) continue;
+        if (actionLine.empty()) {continue;}
 
         std::istringstream inputStreamm(actionLine);
         std::string command;
@@ -133,21 +133,26 @@ void Simulation::open(){
         if (command == "step"){
             int numOfSteps;
             inputStreamm >> numOfSteps;
-            //if(inputStreamm.fail() || numOfSteps <= 0). "Thia action never results an error. we can assume numOfStep is always a number"
-            SimulateStep(numOfSteps).act(*this); // this is pointer to the current object(simulation)
+            SimulateStep current_act(numOfSteps);
+            current_act.act(*this);
+            addAction(&current_act);
         }
         else if (command == "plan"){
             std::string settlement_name, selection_policy;
             inputStreamm >> settlement_name >> selection_policy;
 
-            AddPlan(settlement_name, selection_policy).act(*this);
+            AddPlan current_act(settlement_name, selection_policy);
+            current_act.act(*this);
+            addAction(&current_act);
         }
         else if (command == "settlement"){
             std::string settlement_name;
             int settlement_type;
             inputStreamm >> settlement_name >> settlement_type;
 
-            AddSettlement(settlement_name, static_cast<SettlementType>(settlement_type)).act(*this);
+            AddSettlement current_act(settlement_name, static_cast<SettlementType>(settlement_type));
+            current_act.act(*this);
+            addAction(&current_act);
         }
         else if (command == "facility"){
 
@@ -158,32 +163,40 @@ void Simulation::open(){
 
             FacilityCategory category_enum = static_cast<FacilityCategory>(category);
          
-            AddFacility(facility_name, category_enum, price, lifeq_impact,eco_impact, env_impact).act(*this);
+            AddFacility current_act(facility_name, category_enum, price, lifeq_impact,eco_impact, env_impact);
+            current_act.act(*this);
+            addAction(&current_act);
 
         }
         else if (command == "planStatus"){
             int plan_id;
             inputStreamm >> plan_id;
 
-            PrintPlanStatus(plan_id).act(*this);
+            PrintPlanStatus current_act(plan_id);
+            current_act.act(*this);
+            addAction(&current_act);
         }
         else if (command == "changePolicy"){
             int plan_id;
             std::string selection_policy;
             inputStreamm >> plan_id >> selection_policy;
 
-            ChangePlanPolicy(plan_id, selection_policy).act(*this);
+            ChangePlanPolicy current_act(plan_id, selection_policy);
+            current_act.act(*this);
+            addAction(&current_act);
         }
         else if (command == "log") {PrintActionsLog().act(*this);}
         
-        else if (command == "backup") {BackupSimulation().act(*this);}
+        else if (command == "backup") {
+            BackupSimulation().act(*this);
+            //addAction()
+        }
 
         else if(command == "restore") {RestoreSimulation().act(*this);}
 
         else if (command == "close") {close();}
 
         else {std::cout << "Invalid method. Please try again." << std::endl;}
-
     }
 
 }

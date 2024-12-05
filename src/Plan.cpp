@@ -39,7 +39,7 @@ void Plan::step() {
 
      //Stage 3 (Now the PlanStatus is BUSY)
      std::vector<Facility*>::iterator iter;
-     for (iter = ++underConstruction.begin(); iter != underConstruction.end();) {
+     for (iter = underConstruction.begin(); iter != underConstruction.end();) {
         (*iter) -> Facility::step();
         if ((*iter) -> getStatus() == FacilityStatus::OPERATIONAL) {
             addFacility(*iter);
@@ -77,10 +77,10 @@ void Plan::printStatus() {
 void Plan::addFacility(Facility* facility) {
     if (facility->getStatus() == FacilityStatus::UNDER_CONSTRUCTIONS) {
         underConstruction.emplace_back(facility);
+        life_quality_score += facility->getLifeQualityScore();
+        economy_score += facility->getEconomyScore();
+        environment_score += facility->getEnvironmentScore();
     } else {facilities.emplace_back(facility);}
-    life_quality_score += facility->getLifeQualityScore();
-    economy_score += facility->getEconomyScore();
-    environment_score += facility->getEnvironmentScore();
 }
 
 const string Plan::toString() const {
@@ -90,7 +90,7 @@ const string Plan::toString() const {
         << "\nSelectionPolicy: " << selectionPolicy -> toString()
         << "\nLifeQualityScore: " << life_quality_score
         << "\nEconomyScore: " << economy_score
-        << "\nEnviromentScore: " << environment_score;
+        << "\nEnviromentScore: " << environment_score << "\n";
     return oss.str();
 }
 
