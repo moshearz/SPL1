@@ -5,7 +5,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Empty Constructor 
-BaseAction::BaseAction() : status(ActionStatus::COMPLETED), errorMsg("") {}
+BaseAction::BaseAction() : errorMsg(""), status(ActionStatus::COMPLETED) {}
 
 ActionStatus BaseAction::getStatus() const {
     return status;
@@ -172,7 +172,7 @@ void ChangePlanPolicy::act(Simulation &simulation) {
     bool errorCatch = true;
     for (const string sp : {"nve", "bal", "eco", "env"}) {
         if (sp == newPolicy) {
-            errorCatch == false;
+            errorCatch = false;
             break;
         }
     }
