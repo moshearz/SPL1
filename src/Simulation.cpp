@@ -258,3 +258,4 @@ actionsLog(), plans(), settlements(), facilitiesOptions() {
 Simulation::Simulation(Simulation&& other) : isRunning(other.isRunning), planCounter(other.planCounter),
 actionsLog(std::move(other.actionsLog)), plans(std::move(other.plans)), settlements(std::move(other.settlements)), 
 facilitiesOptions(std::move(other.facilitiesOptions)) {}
+///fdvdv
