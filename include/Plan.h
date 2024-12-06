@@ -25,15 +25,13 @@ class Plan {
 
 
         const int getPlanID() const;
+        string getSelectionPolicy() const;
 
         ~Plan(); //Required to clean up SelectionPolicy* and the std::vector<Facility*> elements.
         Plan(const Plan& other); //Required to deep copy SelectionPolicy* (via a clone method) and deep copy facilities and underConstruction vectors
         Plan(Plan&& other); //Required to transfer ownership of SelectionPolicy* and vectors.
         Plan& operator=(const Plan& other) = delete;
-        Plan& operator=(Plan&& other) = delete;
-
-        //Plan& operator=(Plan&& other) noexcept;
-        
+        Plan& operator=(Plan&& other) = delete;        
 
     private:
         int plan_id;

@@ -22,7 +22,7 @@ const vector<Facility*>& Plan::getFacilities() const {return facilities;}
 //=============================================SETTERS====================================================
 void Plan::setSelectionPolicy(SelectionPolicy* _selectionPolicy) {
     delete selectionPolicy;
-    selectionPolicy = _selectionPolicy -> clone();
+    selectionPolicy = std::move(_selectionPolicy);
 }
 
 
@@ -93,6 +93,10 @@ const string Plan::toString() const {
     return oss.str();
 }
 
+string Plan::getSelectionPolicy() const {
+    return (*this).selectionPolicy->toString();
+}
+
 
 Plan::~Plan() {
     delete selectionPolicy;
@@ -102,6 +106,7 @@ Plan::~Plan() {
     for (Facility* fp : underConstruction) {
         delete fp;
     }
+    facilityOrder.clear();
 }
 
 Plan::Plan(const Plan& other) : plan_id(other.plan_id), settlement(other.settlement), selectionPolicy(other.selectionPolicy->clone()),

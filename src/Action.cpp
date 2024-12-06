@@ -176,10 +176,10 @@ void ChangePlanPolicy::act(Simulation &simulation) {
             break;
         }
     }
-    if (!simulation.isPlanExists(planId) or errorCatch or newPolicy == simulation.getPlan(planId).toString()) {
+    if (!simulation.isPlanExists(planId) or errorCatch or newPolicy == simulation.getPlan(planId).getSelectionPolicy()) {
         error("Cannot change selection policy");
     } else {
-        Plan plan = simulation.getPlan(planId);
+        Plan& plan = simulation.getPlan(planId);
         plan.setSelectionPolicy(simulation.createSelectionPolicy(newPolicy, plan.getlifeQualityScore(), plan.getEconomyScore(), plan.getEnvironmentScore()));
         complete();
     }
