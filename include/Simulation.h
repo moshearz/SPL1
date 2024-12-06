@@ -29,9 +29,9 @@ class Simulation {
         void printActionsLog() const;
         SelectionPolicy* createSelectionPolicy(const string& _selectionPolicy, int _life_quality_score, int _economy_score, int _enviroment_score) const;
 
-        ~Simulation(); //Required to clean up std::vector<Action*> (deep deletion).
-        Simulation(const Simulation& other); //Required for deep copying actionsLog (using Action*'s clone method).
-        Simulation(Simulation&& other) = delete;
+        ~Simulation();
+        Simulation(const Simulation& other);
+        Simulation(Simulation&& other);
         Simulation& operator=(const Simulation& other) = delete;
         Simulation& operator=(Simulation&& other) = delete;
 

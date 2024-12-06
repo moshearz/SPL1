@@ -34,6 +34,7 @@ SimulateStep::SimulateStep(const int _numOfSteps) : numOfSteps(_numOfSteps) {}
 void SimulateStep::act(Simulation &simulation) {
     for (int i = 0; i < numOfSteps; i++) {simulation.step();}
     complete();
+    simulation.addAction(this);
 }
 
 const string SimulateStep::toString() const {
@@ -68,6 +69,7 @@ void AddPlan::act(Simulation &simulation) {
         simulation.addPlan(simulation.getSettlement(settlementName), simulation.createSelectionPolicy(selectionPolicy, 0, 0, 0));
         complete();
     }
+    simulation.addAction(this);
 }
 
 const string AddPlan::toString() const {
@@ -94,6 +96,7 @@ void AddSettlement::act(Simulation &simulation) {
         delete tempSettlement;
         error("Settlement already exists");
     }
+    simulation.addAction(this);
 }
 
 AddSettlement* AddSettlement::clone() const {
@@ -119,6 +122,7 @@ void AddFacility::act(Simulation &simulation) {
     FacilityType temp_f(facilityName, facilityCategory, price, lifeQualityScore, economyScore, environmentScore);
     if (simulation.addFacility(std::move(temp_f))) {complete();} 
     else {error("Facility already exists");}
+    simulation.addAction(this);
 }
 
 AddFacility* AddFacility::clone() const {
@@ -144,6 +148,7 @@ void PrintPlanStatus::act(Simulation &simulation) {
         simulation.getPlan(planId).printStatus();
         complete();
     } else {error("Plan doesn't exist");}
+    simulation.addAction(this);
 }
 
 PrintPlanStatus* PrintPlanStatus::clone() const {
@@ -178,6 +183,7 @@ void ChangePlanPolicy::act(Simulation &simulation) {
         plan.setSelectionPolicy(simulation.createSelectionPolicy(newPolicy, plan.getlifeQualityScore(), plan.getEconomyScore(), plan.getEnvironmentScore()));
         complete();
     }
+    simulation.addAction(this);
 }
 
 ChangePlanPolicy* ChangePlanPolicy::clone() const {
@@ -244,6 +250,7 @@ void BackupSimulation::act(Simulation &simulation) {
     delete backup;
     backup = new Simulation(simulation);
     complete();
+    simulation.addAction(this);
 }
 
 BackupSimulation* BackupSimulation::clone() const {
@@ -269,6 +276,7 @@ void RestoreSimulation::act(Simulation &simulation) {
         new (&simulation) Simulation(*backup);
         complete();
     }
+    simulation.addAction(this);
 }
 
 RestoreSimulation* RestoreSimulation::clone() const {

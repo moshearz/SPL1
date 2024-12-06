@@ -1,17 +1,11 @@
 #include "Simulation.h"
-#include "Plan.h"
 #include "Action.h"
 
-#include <vector>
-#include <string>
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <algorithm>
 #include <cstdlib>
-
-using namespace std;
-// VERIFY RULE OF 5 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 // ===============================================CONSTRUCTOR=================================================
 Simulation::Simulation(const string &configFilePath) : isRunning(false), planCounter(0),
@@ -226,7 +220,7 @@ bool Simulation::isPlanExists(const int& planId) const {
 
 void Simulation::printActionsLog() const{
     for (BaseAction* actionLine : actionsLog) {
-        cout << actionLine -> toString() << "\n";}
+        std::cout << actionLine -> toString() << "\n";}
 }
 
 SelectionPolicy* Simulation::createSelectionPolicy(const string& _selectionPolicy, int _life_quality_score, int _economy_score, int _enviroment_score) const {
@@ -260,3 +254,7 @@ actionsLog(), plans(), settlements(), facilitiesOptions() {
         facilitiesOptions.push_back(FacilityType(ft));
     }
 }
+
+Simulation::Simulation(Simulation&& other) : isRunning(other.isRunning), planCounter(other.planCounter),
+actionsLog(std::move(other.actionsLog)), plans(std::move(other.plans)), settlements(std::move(other.settlements)), 
+facilitiesOptions(std::move(other.facilitiesOptions)) {}
