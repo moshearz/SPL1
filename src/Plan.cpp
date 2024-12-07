@@ -101,10 +101,10 @@ string Plan::getSelectionPolicy() const {
 Plan::~Plan() {
     delete selectionPolicy;
     for (Facility* fp : facilities) {
-        delete fp;
+        if (fp) {delete fp;}
     }
     for (Facility* fp : underConstruction) {
-        delete fp;
+        if (fp) {delete fp;}
     }
     facilityOrder.clear();
 }

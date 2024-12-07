@@ -28,6 +28,7 @@ class Simulation {
         bool isPlanExists(const int& planId) const;
         void printActionsLog() const;
         SelectionPolicy* createSelectionPolicy(const string& _selectionPolicy, int _life_quality_score, int _economy_score, int _enviroment_score) const;
+        vector<Settlement*>& getSettlements();
 
         ~Simulation();
         Simulation(const Simulation& other);

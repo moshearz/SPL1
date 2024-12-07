@@ -272,6 +272,9 @@ RestoreSimulation::RestoreSimulation() {}
 void RestoreSimulation::act(Simulation &simulation) {
     if (backup == nullptr) {error("No backup available");}
     else {
+        for (Settlement* s : simulation.getSettlements()) {
+            if (!backup -> isSettlementExists(s->getName())) {delete s;}
+        }
         simulation.~Simulation();
         new (&simulation) Simulation(*backup);
         complete();

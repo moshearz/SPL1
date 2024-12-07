@@ -118,6 +118,9 @@ void Simulation::close() {
     for (const Plan& p : plans) {
         std::cout << p.toString();
     }
+    for (Settlement* s : settlements) {
+        if (s) {delete s;}
+    }
     std::cout << "\nSimulation has been closed. Please come back :)" << std::endl;
 }
 
@@ -208,25 +211,21 @@ SelectionPolicy* Simulation::createSelectionPolicy(const string& _selectionPolic
     else {return new SustainabilitySelection();}
 }
 
-Simulation::~Simulation() {
+vector<Settlement*>& Simulation::getSettlements() {return settlements;}
+
+Simulation::~Simulation() {// since settlements is shared between simulation and the backup we will manually delete it at the end of the program
     for (BaseAction* Act : actionsLog) {
-        delete Act;
-    }
-    for (Settlement* s : settlements) {
-        delete s;
+        if (Act) {delete Act;}
     }
 }
 
 Simulation::Simulation(const Simulation& other) : isRunning(other.isRunning), planCounter(other.planCounter),
-actionsLog(), plans(), settlements(), facilitiesOptions() {
+actionsLog(), plans(), settlements(other.settlements), facilitiesOptions() {
     for (BaseAction* Act : other.actionsLog) {
         actionsLog.push_back(Act -> clone());
     }
     for (const Plan& p : other.plans) {
         plans.push_back(Plan(p));
-    }
-    for (Settlement* s : other.settlements) {
-        settlements.push_back(new Settlement(*s));
     }
     for (const FacilityType& ft : other.facilitiesOptions) {
         facilitiesOptions.push_back(FacilityType(ft));
