@@ -1,7 +1,4 @@
 #include "Plan.h"
-#include "Facility.h"
-#include <sstream>
-#include <iostream>
 
 //===============================================constructor==============================================
 Plan::Plan(const int _planId, const Settlement& _settlement, SelectionPolicy* _selectionPolicy, const vector<FacilityType>& _facilityOptions) : 

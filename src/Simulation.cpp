@@ -1,12 +1,6 @@
 #include "Simulation.h"
 #include "Action.h"
 
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <algorithm>
-#include <cstdlib>
-
 // ===============================================CONSTRUCTOR=================================================
 Simulation::Simulation(const string &configFilePath) : isRunning(false), planCounter(0),
 actionsLog(), plans(), settlements(), facilitiesOptions() {

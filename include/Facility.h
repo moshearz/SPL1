@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <sstream>
+#include <iostream>
 using std::string;
 using std::vector;
 

@@ -1,21 +1,22 @@
-CXX = g++
-CXXFLAGS = -Wall -g -o0 -c -Weffc++ -I./include
+all: clean compile link run
 
-SRCS = $(wildcard src/*.cpp)
+link: compile
+	g++ -o bin/main bin/main.o bin/Action.o bin/Auxiliary.o bin/Facility.o bin/Plan.o bin/SelectionPolicy.o bin/Settlement.o bin/Simulation.o
 
-OBJ_DIR = bin
-OBJS = $(SRCS:src/%.cpp=$(OBJ_DIR)/%.o)
+	
+compile: src/main.cpp src/Action.cpp src/Auxiliary.cpp src/Facility.cpp src/Plan.cpp src/SelectionPolicy.cpp src/Settlement.cpp src/Simulation.cpp 
+	g++ -g -c -Wall -Weffc++ -std=c++11 -Iinclude -c  -o bin/main.o src/main.cpp
+	g++ -g -c -Wall -Weffc++ -std=c++11 -Iinclude -c -o bin/Action.o src/Action.cpp
+	g++ -g -c -Wall -Weffc++ -std=c++11 -Iinclude -c -o bin/Auxiliary.o src/Auxiliary.cpp
+	g++ -g -c -Wall -Weffc++ -std=c++11 -Iinclude -c -o bin/Facility.o src/Facility.cpp
+	g++ -g -c -Wall -Weffc++ -std=c++11 -Iinclude -c -o bin/Plan.o src/Plan.cpp
+	g++ -g -c -Wall -Weffc++ -std=c++11 -Iinclude -c -o bin/SelectionPolicy.o src/SelectionPolicy.cpp
+	g++ -g -c -Wall -Weffc++ -std=c++11 -Iinclude -c -o bin/Settlement.o src/Settlement.cpp
+	g++ -g -c -Wall -Weffc++ -std=c++11 -Iinclude -c -o bin/Simulation.o src/Simulation.cpp
 
-TARGET = bin/main
 
-all: $(TARGET)
+clean:  
+	rm -f bin/*
 
-$(TARGET): $(OBJS)
-	$(CXX) $(OBJS) -o $(TARGET)
-
-$(OBJ_DIR)/%.o: src/%.cpp
-	mkdir -p $(OBJ_DIR) # Ensure the bin/ directory exists
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-clean:
-	rm -rf $(OBJS) $(TARGET)
+run:
+	./bin/main ./config_file.txt

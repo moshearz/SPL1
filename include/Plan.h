@@ -1,5 +1,7 @@
 #pragma once
 #include <vector>
+#include <sstream>
+#include <iostream>
 #include "Facility.h"
 #include "Settlement.h"
 #include "SelectionPolicy.h"

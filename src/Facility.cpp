@@ -1,6 +1,4 @@
 #include "Facility.h"
-#include <sstream> // For std::ostringstream
-#include <iostream>
 
 FacilityType::FacilityType(const string& _name, const FacilityCategory _category, const int _price,
                            const int _lifeQuality_score, const int _economy_score, const int _environment_score)
