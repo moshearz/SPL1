@@ -274,7 +274,8 @@ void RestoreSimulation::act(Simulation &simulation) {
             if (!backup -> isSettlementExists(s->getName())) {delete s;}
         }
         simulation.~Simulation();
-        new (&simulation) Simulation(*backup);
+        new (&simulation) Simulation(*backup); //used replacement new in order to be efficient in memory placement on the heap by using 
+        //the pre-existing locations taken by the current simulation and allocating the relevent data of backup
         complete();
     }
     simulation.addAction(this);

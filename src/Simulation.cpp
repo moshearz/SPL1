@@ -207,7 +207,7 @@ SelectionPolicy* Simulation::createSelectionPolicy(const string& _selectionPolic
 
 vector<Settlement*>& Simulation::getSettlements() {return settlements;}
 
-Simulation::~Simulation() {// since settlements is shared between simulation and the backup we will manually delete it at the end of the program
+Simulation::~Simulation() {// since settlements is shared between simulation and the backup, we will manually delete it at the end of the program
     for (BaseAction* Act : actionsLog) {
         if (Act) {delete Act;}
     }
@@ -229,4 +229,3 @@ actionsLog(), plans(), settlements(other.settlements), facilitiesOptions() {
 Simulation::Simulation(Simulation&& other) : isRunning(other.isRunning), planCounter(other.planCounter),
 actionsLog(std::move(other.actionsLog)), plans(std::move(other.plans)), settlements(std::move(other.settlements)), 
 facilitiesOptions(std::move(other.facilitiesOptions)) {}
-///fdvdv
