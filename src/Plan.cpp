@@ -106,21 +106,25 @@ Plan::~Plan() {
     facilityOrder.clear();
 }
 
+//Plan's copy constructor is not a full deep copy since we are passing reference for settlement and facilityOptions.
+//Those two cases for which we end up with two plan objects with the same source is dealt with in the other classes.
 Plan::Plan(const Plan& other) : plan_id(other.plan_id), settlement(other.settlement), selectionPolicy(other.selectionPolicy->clone()),
     status(other.status), facilities(), underConstruction(), facilityOptions(other.facilityOptions), life_quality_score(other.life_quality_score),
     economy_score(other.economy_score), environment_score(other.environment_score), facilityOrder() {
-    for (Facility* fp : other.facilities) {
-        facilities.push_back(new Facility(*fp));
-    }
-    for (Facility* fp : other.underConstruction) {
-        underConstruction.push_back(new Facility(*fp));
+    for (Facility* fp : other.facilityOrder) {
+        Facility* temp = new Facility(*fp);
+        facilityOrder.push_back(temp);
+        if (temp->getStatus() == FacilityStatus::UNDER_CONSTRUCTIONS) {underConstruction.push_back(temp);}
+        else {facilities.push_back(temp);}
     }
 }
 
+//
 Plan::Plan(Plan&& other) : plan_id(other.plan_id), settlement(other.settlement), selectionPolicy(other.selectionPolicy),
     status(other.status), facilities(std::move(other.facilities)), underConstruction(std::move(other.underConstruction)), facilityOptions(other.facilityOptions), 
-    life_quality_score(other.life_quality_score), economy_score(other.economy_score), environment_score(other.environment_score), facilityOrder() {
+    life_quality_score(other.life_quality_score), economy_score(other.economy_score), environment_score(other.environment_score), facilityOrder(std::move(other.facilityOrder)) {
     other.selectionPolicy = nullptr;
     other.facilities.clear();
     other.underConstruction.clear();
+    other.facilityOrder.clear();
 }
