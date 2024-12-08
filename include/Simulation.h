@@ -19,7 +19,7 @@ class Simulation {
     public:
         Simulation(const string &configFilePath);
         void start();
-        void addPlan(const Settlement &settlement, SelectionPolicy *selectionPolicy); //the selection policy pointer points to memory in heap
+        void addPlan(const Settlement &settlement, SelectionPolicy *selectionPolicy); //the selection policy pointer points to memory in heap.
         void addAction(BaseAction *action);
         bool addSettlement(Settlement *settlement); //the settlement pointer points to memory in heap
         bool addFacility(FacilityType facility); //the facility pointer points to memory in heap
